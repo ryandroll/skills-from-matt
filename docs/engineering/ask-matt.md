@@ -45,7 +45,7 @@ The skill's leading word is **flow**, a path *through* the skills rather than a 
 | A prototype | Its own task ends with a retained branch and retired worktree. |
 | Moving sessions | `handoff` carries the feature identity, checkout and run tokens. |
 
-The skills drive these transitions; publication requires a separate request.
+Before the feature settles, `retro` adds and commits at least one deterministic check on the feature branch without separate approval. The skills drive these transitions; publication requires a separate request.
 
 ## The phase boundary
 

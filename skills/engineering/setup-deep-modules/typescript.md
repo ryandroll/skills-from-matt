@@ -161,4 +161,4 @@ Run `npm run check` (or its package-manager equivalent) for each state:
 
 ## 7. Document
 
-Put the README at `<packages-root>/README.md`, showing root entry points, private `core/`, `lib/`, and `tests/`, and the `check` command. Explain that adding any new subfolder needs no shape-rule change, and that several small root entry points are preferable to a barrel. Follow the shared pointer-line step.
+Put the README at `<packages-root>/README.md`, showing root entry points, private `core/`, `lib/`, and `tests/`, and the `check` command. Explain that adding any new subfolder needs no shape-rule change, and that several small root entry points are preferable to a barrel. Follow the shared pointer-line step, including the umbrella command in the agent-instructions line itself.

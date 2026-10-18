@@ -35,7 +35,7 @@ The run keeps implementation and its evidence in one task:
 1. Check the Git stage, then read the ticket or spec and work out the seams.
 2. Always drive [tdd](https://aihero.dev/skills-tdd) at the seams the ticket or spec names, one red-green slice at a time.
 3. Typecheck often, run single test files as it goes.
-4. Run the full test suite once, at the end.
+4. Run the umbrella check at the end, using the command found through the project's agent instructions.
 5. Commit verified work through git-workflow, run [code-review](https://aihero.dev/skills-code-review), and verify and commit any fixes.
 6. Refresh from the integration target and complete the task. A ticket returns to its feature session for settlement; a standalone change prints the settlement route for the primary session.
 
@@ -69,7 +69,7 @@ Separately, some people do not want the review inside the run at all, because an
 
 **One ticket burned 150k tokens. Am I using it wrong?**
 
-Probably not. The ticket is more likely too big. A run does codebase exploration, a red-green loop per seam, a full suite, and a review, so a non-trivial ticket exceeding 100k [tokens](https://www.aihero.dev/ai-coding-dictionary/token) is normal rather than a sign something broke. The fix is upstream. Right-size the tickets in [to-spec](https://aihero.dev/skills-to-spec) so each fits one fresh window. If a single ticket keeps going over, split it rather than raising the [effort](https://www.aihero.dev/ai-coding-dictionary/effort) level.
+Probably not. The ticket is more likely too big. A run does codebase exploration, a red-green loop per seam, the umbrella check, and a review, so a non-trivial ticket exceeding 100k [tokens](https://www.aihero.dev/ai-coding-dictionary/token) is normal rather than a sign something broke. The fix is upstream. Right-size the tickets in [to-spec](https://aihero.dev/skills-to-spec) so each fits one fresh window. If a single ticket keeps going over, split it rather than raising the [effort](https://www.aihero.dev/ai-coding-dictionary/effort) level.
 
 **`/implement #2` in a fresh session worked on something completely unrelated.**
 
@@ -80,7 +80,7 @@ The agent resolved `#2` against another numbered list in context, such as a todo
 - A wrong checkout stops before any file changes and prints the next command.
 - The session opens by reading the ticket or spec and restating what it will build, rather than asking you what to build.
 - You can see `tdd` invoked in the trace, with a failing test before implementation.
-- Typechecks and single test files run repeatedly during the run, and the full suite runs once near the end.
+- Typechecks and single test files run repeatedly during the run, and the umbrella check runs at the end.
 - The trace shows `commit-input` followed by `commit` with literal task paths, before review.
 - The diff is one ticket's worth of change: a vertical slice through every layer, not several tickets swept together.
 

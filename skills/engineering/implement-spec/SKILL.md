@@ -42,6 +42,6 @@ Communication to and from subagents should be sparse. Communicate primarily thro
 
 7. Once all tickets are settled, call the Skill tool with "code-review" on the feature branch, defaulting to its task base commit. Fix the findings in a single **implementer subagent**, in a new ticket task cut from the feature through steps 4 and 5. Verify the fixes and settle that ticket before closing out.
 
-8. Call the Skill tool with "retro" in this session; it presents candidates and writes nothing itself. Make every change the operator accepts in the feature checkout and commit it through the commit route; then `task-refresh --repo <feature-checkout>` with the feature run flags, verify, and `task-complete --repo <feature-checkout> --declared-by workflow --reason <completion-summary> --confirm-authorized` with the same flags.
+8. Call the Skill tool with "retro" in this session; it adds and commits its own deterministic check on the feature branch. Make any further changes the operator accepts in the feature checkout and commit them through the commit route; then `task-refresh --repo <feature-checkout>` with the feature run flags, verify, and `task-complete --repo <feature-checkout> --declared-by workflow --reason <completion-summary> --confirm-authorized` with the same flags.
 
 9. Report the feature task, branch and checkout, and print the filled `task-settle-plan --repo <primary> --task-id <feature> --outcome integrate` command for the operator's primary session; the apply takes the fresh digest.

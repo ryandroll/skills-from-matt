@@ -29,7 +29,7 @@ The route most work travels. You have an idea and want it built.
 
    The feature stays off `main` until review fixes and `/retro` are done, `task-complete` has run, and the operator's primary session runs the printed `task-settle-plan`/`task-settle-apply` route. Publishing is a separate operator request, through `publish-push-plan`/`publish-push-apply`.
 
-4. **`/retro`** closes the loop. After a build, and especially one that went sideways, it looks back over the session and suggests changes to the agent's **environment**, not the code: navigation pointers, automated checks, the coding standards `/code-review` enforces, steering files, tooling. Mechanical mistakes become deterministic checks; judgement calls become coding standards. The next build then starts from a better environment.
+4. **`/retro`** closes the loop. After a build, and especially one that went sideways, it looks back over the session and suggests changes to the agent's **environment**, not the code: navigation pointers, automated checks, the coding standards `/code-review` enforces, steering files, tooling. Before the feature settles, it adds and commits at least one deterministic check on the feature branch without separate approval. Mechanical mistakes become deterministic checks; judgement calls become coding standards. The next build then starts from a better environment.
 
 ### Context hygiene
 
