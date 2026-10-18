@@ -45,6 +45,8 @@ The skill does *not* define depth as the ratio of implementation lines to interf
 
 Two supporting files go further, and the skill reads them on demand rather than up front. [DEEPENING.md](https://github.com/mattpocock/skills/blob/main/skills/engineering/codebase-design/DEEPENING.md) classifies a candidate's dependencies into four categories (in-process, local-substitutable, remote-but-owned, true-external), because the category decides how you test the deepened module across its seam. [DESIGN-IT-TWICE.md](https://github.com/mattpocock/skills/blob/main/skills/engineering/codebase-design/DESIGN-IT-TWICE.md) starts parallel [sub-agents](https://www.aihero.dev/ai-coding-dictionary/subagent) to produce three or more radically different interfaces for the same module, then compares them on depth, locality and seam placement.
 
+**Sans-I/O** (functional core / imperative shell) names the shape behind returning results and keeping in-process dependencies free of I/O. The core takes values and returns values or effects as data; the shell performs the I/O without making business decisions. `core-is-sans-io` checks the imports, while `CODING_STANDARDS.md` holds the reviewer's sans-I/O shape rules.
+
 ## Common questions
 
 **How do I actually build a deep module in TypeScript?**

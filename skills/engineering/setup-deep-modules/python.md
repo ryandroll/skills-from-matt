@@ -172,4 +172,4 @@ If existing ruff rules also reject the planted unused import, the import-contrac
 
 ## 7. Document
 
-Put the short README beside the packages (repository root for this flat example, `src/README.md` for a `src/` layout). Show the public root modules, private `core/`, tests, the discovered suite command and any reduced cycle coverage. Explain the need to register new private subpackages and consumer roots. Follow the shared pointer-line step.
+Put the short README beside the packages (repository root for this flat example, `src/README.md` for a `src/` layout). Show the public root modules, private `core/`, tests, the discovered suite command and any reduced cycle coverage. Explain the need to register new private subpackages and consumer roots. Follow the shared pointer-line step, including the umbrella command in the agent-instructions line itself.

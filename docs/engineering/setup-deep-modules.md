@@ -43,7 +43,7 @@ No. Python starts with a `core/` package and Rust with a core crate, as small as
 - A test that imports private implementation fails with an architecture diagnostic.
 - An I/O import or call planted in core fails with `core-is-sans-io` in the output.
 - Removing the planted violations makes the normal check pass again.
-- New contributors find the layout and check command through one pointer in the repository's agent instructions.
+- New contributors find the umbrella command directly in one pointer line in the repository's agent instructions, with a link to the layout README, for every supported language.
 
 ## Where it fits
 

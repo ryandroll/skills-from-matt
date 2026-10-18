@@ -19,7 +19,7 @@ Implement the work described by the user in the spec, ticket or settled conversa
 
 If the user passes a ticket reference, fetch it from the configured issue tracker and state its title before starting. If the reference is ambiguous, ask.
 
-Call the Skill tool with "tdd" at the seams the ticket or spec names. Use the project's verification commands for regular typechecking and focused test files, then the full suite at the end; commit verified work through the route below so the review can see it.
+Call the Skill tool with "tdd" at the seams the ticket or spec names. Use the project's verification commands for regular typechecking and focused test files, then the umbrella check at the end; commit verified work through the route below so the review can see it.
 
 ## 3. Commit and review
 

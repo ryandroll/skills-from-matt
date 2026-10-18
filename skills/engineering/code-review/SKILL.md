@@ -22,6 +22,8 @@ Capture the diff command once: `git diff <fixed-point>...HEAD` (three-dot, so th
 
 Before going further, confirm the fixed point resolves (`git rev-parse <fixed-point>`) and the diff is non-empty. A bad ref or empty diff should fail here, not inside two parallel sub-agents.
 
+Run the umbrella check in the checkout under review, following the project's agent instructions for the command. If it fails, return the work to the implementer with the failing output and launch no reviewer.
+
 ### 2. Identify the spec source
 
 Look for the originating spec, in this order:
