@@ -19,7 +19,9 @@ Reach for it when settled work needs a durable plan, especially when the build s
 
 ## Prerequisites
 
-`to-spec` publishes the spec and one file or issue per ticket, so [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) must first configure a tracker and the triage-label vocabulary for this repo. Either kind of tracker works: a real tracker like GitHub, or local markdown files under `.scratch/`, which work with no extra setup.
+Git-workflow must be available. Before its first file write, the skill opens the feature task and continues in that checkout. Later planning sessions reuse it, so glossary, decisions, map, spec and tickets stay on one feature branch. Planning files are committed there before implementation tickets start; `main` remains untouched until the feature is settled.
+
+`to-spec` publishes the spec and one file or issue per ticket, so [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) must first configure a tracker and the triage-label vocabulary for this repo. Either kind of tracker works: a real tracker like GitHub, or local markdown files at the durable tracker path named in the project's agent instructions, under "Issue tracker".
 
 ## The spec is a decision record
 
@@ -35,13 +37,13 @@ Other skills use those agreed seams later. Each ticket gets a **Seams** section 
 
 ## Tracer bullets and blocking edges
 
-After writing the spec, the same invocation looks for prefactoring and breaks the build into vertical slices. Each ticket delivers a narrow, complete path through the layers and fits one fresh context window. It keeps its acceptance criteria and declares which other tickets block it. Wide mechanical refactors use expand–contract instead: add the new form, migrate callers in batches, then remove the old form. Where batches cannot stay green alone, they share an integration branch and block a final integrate-and-verify ticket.
+After writing the spec, the same invocation looks for prefactoring and breaks the build into vertical slices. Each ticket delivers a narrow, complete path through the layers and fits one fresh context window. It keeps its acceptance criteria and declares which other tickets block it. Wide mechanical refactors use expand–contract instead: add the new form, migrate callers in batches, then remove the old form. Where batches cannot stay green alone, they share the feature branch and block a final integrate-and-verify ticket.
 
-The seam check is the one planning check with you. There is no separate ticket-breakdown quiz: the grill already settled the scope. The final message presents the published tickets, their blocking edges, and what each delivers.
+The seam check is the one planning check with you. There is no separate ticket-breakdown quiz: the grill already settled the scope. The final message names the feature task and checkout and presents the published tickets, their blocking edges, and what each delivers. The planning files are committed on that feature branch, ready for its ticket tasks.
 
 | Tracker | Published tickets |
 | --- | --- |
-| Local markdown | One file per ticket under `.scratch/<feature>/issues/<NN>-<slug>.md`, numbered blockers-first |
+| Local markdown | One file per ticket at the configured durable tracker path, named `<NN>-<slug>.md` and numbered blockers-first |
 | A real tracker | One issue per ticket, using native blocking links where available and body references otherwise |
 
 ## Common questions
@@ -75,6 +77,8 @@ Ticket creation continues in the same invocation that wrote the spec, so there i
 
 ## It's working if
 
+- The first file write is in the feature checkout, and the next planning step keeps using that task.
+
 - It synthesises settled decisions rather than restarting the interview.
 - It shows you the seams before it writes, and proposes as few as it can.
 - The spec and tickets appear in the same run, and every ticket has acceptance criteria, blocking edges, and a Seams section.
@@ -87,7 +91,7 @@ Ticket creation continues in the same invocation that wrote the spec, so there i
 `to-spec` is the spec-and-tickets step in the main build chain:
 
 ```txt
-grill-with-docs → to-spec → implement → code-review → retro
+grill-with-docs → to-spec → implement-spec → code-review → retro
 ```
 
-Upstream, [grill-with-docs](https://aihero.dev/skills-grill-with-docs) makes the decisions that this skill only records, and a finished [wayfinder](https://aihero.dev/skills-wayfinder) map joins the chain here. It then cuts the spec into tracer-bullet tickets for [implement](https://aihero.dev/skills-implement) or [implement-spec](https://aihero.dev/skills-implement-spec) to build. When you're unsure which skill or flow fits, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+Upstream, [grill-with-docs](https://aihero.dev/skills-grill-with-docs) makes the decisions that this skill only records, and a finished [wayfinder](https://aihero.dev/skills-wayfinder) map joins the chain here. It then cuts the spec into tracer-bullet tickets for [implement-spec](https://aihero.dev/skills-implement-spec) to build in ticket tasks. [implement](https://aihero.dev/skills-implement) handles a separate small change in one task. When you're unsure which skill or flow fits, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.

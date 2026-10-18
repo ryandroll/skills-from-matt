@@ -25,7 +25,7 @@ A ticket without seams needs repair, not a test exemption.
 
 ## Prerequisites
 
-[codebase-design](https://aihero.dev/skills-codebase-design) needs to be installed. `tdd` used to carry its own deep-module and interface-design notes; v1.0 deleted them in favour of the shared skill, and `tdd` now uses its interface-design vocabulary. Nothing else; the skill is [stateless](https://www.aihero.dev/ai-coding-dictionary/stateless) and writes no files of its own.
+[codebase-design](https://aihero.dev/skills-codebase-design) needs to be installed. `tdd` used to carry its own deep-module and interface-design notes; v1.0 deleted them in favour of the shared skill, and `tdd` now uses its interface-design vocabulary. Git-workflow must provide a skill-owned checkout, an open task and a bound run. Step 1 checks these read-only and stops with the next command if anything is missing.
 
 ## The loop, and the seam it runs at
 
@@ -46,6 +46,10 @@ The three anti-patterns it is written to prevent:
 | Horizontal slicing | A batch of tests landed before any implementation. |
 
 Mocks are for system boundaries only: external APIs, time, randomness, sometimes the filesystem or the database. Never mock your own modules.
+
+## Verification and commits
+
+The red-green loop runs in the checked task checkout. Focused tests establish each slice, typechecks run regularly, and the full suite finishes the work. Verified changes use git-workflow's `commit-input` then `commit` route, with literal file paths and the same run identity. Verification and commit results are reported separately.
 
 ## Common questions
 
@@ -79,6 +83,7 @@ No. Run against one ticket, it can propose work that belongs to a sibling ticket
 
 ## It's working if
 
+- The run stops before writing in the wrong checkout, and successful commits name literal task files through git-workflow.
 - Ticket work uses the ticket's Seams section; a missing section stops the run with a request for seams from `to-spec`.
 - With no ticket, it names the seams and waits for your confirmation before any test file exists.
 - One test appears, goes red, gets just enough code to pass, and only then does the next test appear, not a batch of tests followed by a batch of code.

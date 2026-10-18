@@ -113,6 +113,8 @@ Tool preference:
 
 ## Phase 5: Fix + regression test
 
+Hand the fix to the user to run `/implement` in its own task targeting `main`, with its stage check and commit route.
+
 Write the regression test **before the fix**, but only if there is a **correct seam** for it.
 
 A correct seam is one where the test exercises the **real bug pattern** as it occurs at the call site. If the only available seam is too shallow (single-caller test when the bug needs multiple callers, unit test that can't replicate the chain that triggered the bug), a regression test there gives false confidence.

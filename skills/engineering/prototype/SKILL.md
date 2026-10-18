@@ -7,6 +7,19 @@ description: Build a throwaway prototype to answer a design question. Use when t
 
 A prototype is **throwaway code that answers a question**. The question decides the shape.
 
+## 1. Open the prototype task
+
+Call the Skill tool with "git-workflow". A prototype has its own task, separate from the feature that asked the question. From the primary checkout run `task-start --repo <primary> --task-id <prototype-slug> --task-id-source <issuer> --session-id <session> --confirm-authorized`, then work in the returned checkout with its bound run and `environment.TMPDIR`. Reuse that task when resuming the same prototype. On failure stop and print the next command the report names.
+
+When this session is already bound to a feature checkout, open the prototype task from the primary checkout with a separate lifecycle run, then work in the new checkout; see git-workflow's workspaces reference for lifecycle session requirements.
+
+## 2. Check before writing
+
+Call the Skill tool with "git-workflow".
+Before touching a file run the read-only `workspace-report --repo <checkout>` then `run-report --repo <checkout> --task-id <task> --task-id-source <issuer> --session-id <session>`.
+Verify a skill-owned checkout, an open task and a run bound to this checkout.
+On failure stop and print the next command the report names, filled with the inspected values: outside a task `task-start --repo <primary> --task-id <task-slug> --task-id-source <issuer> --session-id <session> --confirm-authorized`; unbound `run-start --repo <checkout> --task-id <task> --task-id-source <issuer> --session-id <session> --expected-head <inspected-head> --confirm-authorized`.
+
 ## Pick a branch
 
 Identify which question is being answered, using the user's prompt, the surrounding code, or by asking if the user is around:
@@ -19,8 +32,14 @@ The two branches produce very different artifacts, so getting this wrong wastes 
 ## Rules that apply to both
 
 1. **Throwaway from day one, and clearly marked as such.** Locate the prototype code close to where it will actually be used (next to the module or page it's prototyping for) so context is obvious, but name it so a casual reader can see it's a prototype, not production. For throwaway UI routes, obey whatever routing convention the project already uses; don't invent a new top-level structure.
-2. **Trivial to run.** A UI prototype starts from one command in the project's task runner: `pnpm <name>`, `python <path>`, `bun <path>`, etc. A logic demo is a single HTML file the user double-clicks. Either way, no thinking required to start it.
+2. **Trivial to run.** A UI prototype starts from one documented command in the project's task runner. A logic demo is a single HTML file the user double-clicks. Either way, no thinking required to start it.
 3. **No persistence by default.** State lives in memory. Persistence is the thing the prototype is _checking_, not something it should depend on. If the question explicitly involves a database, hit a scratch DB or a local file with a clear "PROTOTYPE, wipe me" name.
 4. **Skip the polish.** No tests, no error handling beyond what makes the prototype _runnable_, no abstractions. The point is to learn something fast.
 5. **Surface the state.** After every action (logic) or on every variant switch (UI), print or render the full relevant state so the user can see what changed.
-6. **Capture it when done.** Fold any validated decision into the real code, then capture the prototype itself as a **primary source**: commit it to a throwaway branch, out of main, and leave a context pointer to that branch on the implementation issue. Capture the answer too (the verdict and the question it settled) in the issue or a commit. The main branch keeps only the validated decision.
+6. **Capture it when done.** Record the answer (the verdict and the question it settled) with the prototype as a **primary source**. Commit both in this prototype task through git-workflow's `commit-input` then `commit` route with literal paths. Return a context pointer to the retained branch for the implementation issue; the feature session carries the validated decision into production code later.
+
+## Close and retain
+
+Use git-workflow's executor prefix. After verifying the committed tip and clean working state, run `worktree-session --repo <prototype-checkout> --task-id <prototype> --task-id-source <issuer> --session-id <session> --action close --expected-head <full-tip> --keep-unintegrated <reason-for-retaining-prototype> --run-task-id <prototype> --run-task-id-source <issuer> --run-session-id <session>`.
+
+Return to the primary checkout. Use `<lifecycle-task>` for the separate primary-checkout lifecycle run identity and `<lifecycle-session>` for its session. Bind that run with `run-start --repo <primary> --task-id <lifecycle-task> --task-id-source <issuer> --session-id <lifecycle-session> --expected-head <primary-head> --confirm-authorized`. Run `worktree-cleanup-plan --repo <primary> --task-id <prototype>`, then `worktree-cleanup-apply --repo <primary> --task-id <prototype> --plan-digest <returned-digest> --confirm-authorized --run-task-id <lifecycle-task> --run-task-id-source <issuer> --run-session-id <lifecycle-session>`. Follow git-workflow's preservation requirements for any unresolved files; report a blocked cleanup rather than discarding them. Verify the worktree is retired and the prototype branch still retains the tip. Close alone does not release capacity. Do not settle the prototype into `main`.

@@ -9,6 +9,13 @@ TDD is the red → green loop. This skill is the reference that makes that loop 
 
 When exploring the codebase, read `GLOSSARY.md` (if it exists) so test names and interface vocabulary match the project's domain language, and respect ADRs in the area you're touching.
 
+## 1. Check the Git stage
+
+Call the Skill tool with "git-workflow".
+Before touching a file run the read-only `workspace-report --repo <checkout>` then `run-report --repo <checkout> --task-id <task> --task-id-source <issuer> --session-id <session>`.
+Verify a skill-owned checkout, an open task and a run bound to this checkout.
+On failure stop and print the next command the report names, filled with the inspected values: outside a task `task-start --repo <primary> --task-id <task-slug> --task-id-source <issuer> --session-id <session> --confirm-authorized`; unbound `run-start --repo <checkout> --task-id <task> --task-id-source <issuer> --session-id <session> --expected-head <inspected-head> --confirm-authorized`.
+
 ## What a good test is
 
 Tests verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't. A good test reads like a specification: "user can checkout with valid cart" tells you exactly what capability exists, and it survives refactors because it doesn't care about internal structure.
@@ -38,3 +45,9 @@ When the shape of that interface is itself in question (how deep the module is, 
 - **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
 - **One slice at a time.** One seam, one test, one minimal implementation per cycle.
 - **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle.
+
+## Verify and commit
+
+Use the project's focused verification command to observe red, then green, for each slice; typecheck regularly and finish with the full suite. Keep this work in the checked task checkout. A failed check stays visible and blocks completion.
+
+Commit each verified change through git-workflow's `commit-input` then `commit` with literal `--path`s and a freshly inspected `--expected-head`; report verification and commit separately.

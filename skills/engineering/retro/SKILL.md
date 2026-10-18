@@ -1,10 +1,9 @@
 ---
 name: retro
-description: "Conduct a retrospective on a coding session."
-disable-model-invocation: true
+description: "Review a coding session for improvements to the agent's environment. Use when the user asks for a retrospective or when implement-spec finishes feature review before task completion."
 ---
 
-The user has asked for a **retrospective**. You are suggesting improvements to the coding agent's **environment** to improve future runs.
+Run a **retrospective** on the completed session. You are suggesting improvements to the coding agent's **environment** to improve future runs.
 
 ## Steps
 
