@@ -1,0 +1,5 @@
+interface:
+  display_name: "Setup Deep Modules"
+  short_description: "Enforce deep modules and sans-I/O cores"
+policy:
+  allow_implicit_invocation: false
