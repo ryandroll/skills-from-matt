@@ -12,15 +12,15 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
 - **[setup-deep-modules](./setup-deep-modules/SKILL.md)**: Enforce deep modules and sans-I/O cores in TypeScript, Python, and Rust through the normal check command. Run once per repository.
 - **[setup-matt-pocock-skills](./setup-matt-pocock-skills/SKILL.md)**: Configure this repo for the engineering skills (issue tracker, triage labels, domain doc layout). Run once per repo.
-- **[implement](./implement/SKILL.md)**: Build the work described by a spec or set of tickets, driving `/tdd` at the seams the ticket or spec names and closing out with `/code-review` before committing.
-- **[implement-spec](./implement-spec/SKILL.md)**: Implement a whole spec on one integration branch. Works the tickets as a task graph, running implementer subagents across the ready frontier for maximum concurrency, then closes out with `/code-review`.
+- **[implement](./implement/SKILL.md)**: Build the work described by a spec or set of tickets, driving `/tdd` at the seams the ticket or spec names and committing through git-workflow before `/code-review`.
+- **[implement-spec](./implement-spec/SKILL.md)**: Implement a whole spec in one feature task. Runs ticket tasks across the ready frontier, settles them into the feature branch, then closes out with `/code-review` and `/retro` before primary-session settlement.
 - **[wayfinder](./wayfinder/SKILL.md)**: Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on the issue tracker, resolved one at a time until the way to the destination is clear.
-- **[retro](./retro/SKILL.md)**: Suggest improvements to the coding agent's environment (navigation, automated checks, coding standards, steering files, tooling) after a session, most severe first.
 
 ## Model-invoked
 
 Model- or user-reachable (rich trigger phrasing so the model can reach for them).
 
+- **[retro](./retro/SKILL.md)**: Suggest improvements to the coding agent's environment (navigation, automated checks, coding standards, steering files, tooling) after a session, most severe first.
 - **[to-spec](./to-spec/SKILL.md)**: Turn a settled conversation into a spec and tracer-bullet tickets with blocking edges and test seams, published in one invocation.
 - **[prototype](./prototype/SKILL.md)**: Build a throwaway prototype to answer a design question: a single shareable HTML file for state/logic, or several toggleable UI variations.
 

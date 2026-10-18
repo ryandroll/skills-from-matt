@@ -21,6 +21,8 @@ The wayfinder split comes down to session count: `/grill-with-docs` for single-s
 
 ## Prerequisites
 
+Git-workflow must be available. Before its first file write, the skill opens the feature task and continues in that checkout. Later planning sessions reuse it, so glossary, decisions, map, spec and tickets stay on one feature branch. Planning files are committed there before implementation tickets start; `main` remains untouched until the feature is settled.
+
 The skill writes into your repo, so you need to be somewhere it is safe to write. Resolved terms go to a `GLOSSARY.md` glossary at the root, or to the relevant context's `GLOSSARY.md`, if a `GLOSSARY-MAP.md` at the root marks the repo as multi-context. Decisions go to `docs/adr/`. The skill creates both only when it needs them. Nothing exists until the first term or decision is settled, so you set up nothing in advance.
 
 It needs [grilling](https://aihero.dev/skills-grilling) for the interview, [domain-modeling](https://aihero.dev/skills-domain-modeling) for the glossary and ADRs, and [to-spec](https://aihero.dev/skills-to-spec) for the spec and tickets. Installing `grill-with-docs` alone gets you a skill that does not work. [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) must configure the tracker and triage labels before the publishing step.
@@ -57,12 +59,14 @@ The finished interview now calls [to-spec](https://aihero.dev/skills-to-spec) in
 Yes. This is the right skill for a codebase with no ADRs, no domain language and no design principles: invoke it and say "help me document my repo". Users often pair it with [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture) for building or repairing a `GLOSSARY.md`. Expect to steer it. It reads code and asks you about what it finds, and you decide which of the words already in the codebase are the right ones.
 
 **What should I do when the session ends?**
-Confirm the shared understanding once the frontier is empty. The agent then calls [to-spec](https://aihero.dev/skills-to-spec), checks the test seams with you, and writes the spec and tickets. The final message gives you the breakdown; you choose [implement](https://aihero.dev/skills-implement) per ticket or [implement-spec](https://aihero.dev/skills-implement-spec) for the whole graph.
+Confirm the shared understanding once the frontier is empty. The agent then calls [to-spec](https://aihero.dev/skills-to-spec), checks the test seams with you, and writes the spec and tickets. The final message gives you the breakdown; you use [implement-spec](https://aihero.dev/skills-implement-spec) for the feature graph. A separate small change uses [implement](https://aihero.dev/skills-implement) in its own task.
 
 **Why is it called that?**
 Nobody is happy with the name. There is an open suggestion to rename it `grill-domain-model`, which describes the behaviour more accurately. Nothing has moved on it. If a rename ever lands, the docs page moves with it and the URL changes.
 
 ## It's working if
+
+- The first file write is in the feature checkout, and the next planning step keeps using that task.
 
 - `GLOSSARY.md` changes *during* the session, term by term, rather than appearing in one lump at the end.
 - The glossary reads as pure vocabulary (your project's words with tight definitions) and contains no implementation detail or spec-like prose.
@@ -76,7 +80,7 @@ Nobody is happy with the name. There is an open suggestion to rename it `grill-d
 `grill-with-docs` is the head of the main build chain:
 
 ```txt
-grill-with-docs → to-spec → implement → code-review → retro
+grill-with-docs → to-spec → implement-spec → code-review → retro
 ```
 
 It comes before anything is written down as a spec. It produces the shared understanding and settled vocabulary that [to-spec](https://aihero.dev/skills-to-spec) then synthesises without interviewing you again. It drives [domain-modeling](https://aihero.dev/skills-domain-modeling) for the glossary and ADRs, and [grilling](https://aihero.dev/skills-grilling) for the interview. Upstream of it, [wayfinder](https://aihero.dev/skills-wayfinder) charts efforts too large for one session and can hand parts of the map back down to it. When you're unsure which skill or flow fits, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.

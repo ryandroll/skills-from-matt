@@ -6,7 +6,7 @@ It changes the environment, not the code. Take the bug the agent shipped, the fi
 
 ## When to reach for it
 
-You invoke this by typing `/retro`, and the agent won't reach for it on its own.
+Type `/retro`, or the agent reaches for it automatically at feature close-out. `implement-spec` always runs it after review fixes and before completing the feature task.
 
 Reach for it at the end of a session that was harder than it should have been. For example, the agent searched too long for something, made a mistake a tool could have caught, or needed information it could not get. A smooth session has little to teach, and the findings come from the difficult ones. If you want a verdict on the code the session produced, use [code-review](https://aihero.dev/skills-code-review) instead.
 
@@ -26,13 +26,13 @@ Each candidate belongs to one category, and the category decides where the fix g
 
 The leading idea is that standards belong to the **reviewer**, not the implementer. The implementing agent has the most context pressure, because it explores, writes code, and debugs failures. The reviewing agent gets a diff and nothing else. So a new rule goes where there is room to apply it, which is review. It never goes in [AGENTS.md](https://www.aihero.dev/ai-coding-dictionary/agents-md), which loads into every session's [context window](https://www.aihero.dev/ai-coding-dictionary/context-window) whether it is relevant or not.
 
-Before `retro` writes any rule, it classifies the violation. A **mechanical** violation (a banned API, an import shape, a file-location rule) gets a deterministic check, because a check can fail and a sentence in a standards file can't. Only real judgement calls, which no linter can enforce, become prose. If the repo has no guardrail at all (no pre-commit hook, and no CI job that runs lint, typecheck, and tests), `retro` reports that as a finding of its own.
+Before `retro` proposes any rule, it classifies the violation. A **mechanical** violation (a banned API, an import shape, a file-location rule) gets a deterministic check, because a check can fail and a sentence in a standards file can't. Only real judgement calls, which no linter can enforce, become prose. If the repo has no guardrail at all (no pre-commit hook, and no CI job that runs lint, typecheck, and tests), `retro` reports that as a finding of its own.
 
 ## Common questions
 
 **Does it write the lint rule itself, or wait for a yes? Can I wire it to run after every session?**
 
-It waits. `retro` only proposes. Nothing changes until you pick a candidate, so it edits nothing by hand and installs no hook automatically. This is deliberate. One user asked for exactly this after being "burned by auto-hooks that blocked good changes." It takes judgement to decide what deserves a permanent check, so the skill stays [human-in-the-loop](https://www.aihero.dev/ai-coding-dictionary/human-in-the-loop) and user-invoked. Some users do run it after every implementation run. But a smooth session has little to teach, so a run after every session mostly produces rules nobody needed. There is no dry-run mode. A proposed check is code like any other, so try it against the repo before you let it block merges.
+`retro` presents candidates and writes nothing itself. At feature close-out, `implement-spec` makes every change you accept in the feature checkout and commits it through git-workflow, then refreshes and completes the feature task. This is deliberate. One user asked for exactly this after being "burned by auto-hooks that blocked good changes." It takes judgement to decide what deserves a permanent check, so the skill stays [human-in-the-loop](https://www.aihero.dev/ai-coding-dictionary/human-in-the-loop) while allowing automatic invocation. Some users do run it after every implementation run. But a smooth session has little to teach, so a run after every session mostly produces rules nobody needed. There is no dry-run mode. A proposed check is code like any other, so try it against the repo before you let it block merges.
 
 **Won't this pile up lint rules forever? Does it ever suggest removing one?**
 
@@ -60,6 +60,7 @@ The input is different. [improve-codebase-architecture](https://aihero.dev/skill
 
 ## It's working if
 
+- Feature completion follows the retrospective, with any accepted changes kept on the feature branch.
 - Every candidate points back to a specific moment in the session, not a generic best practice.
 - Repeat mistakes turn into failing checks, and your `AGENTS.md` gets shorter over time, not longer.
 - If a check already existed but was not connected, the finding is to connect it, not a proposal to build a new one.
@@ -73,7 +74,7 @@ The input is different. [improve-codebase-architecture](https://aihero.dev/skill
 grill-with-docs → to-spec → implement → code-review → retro
 ```
 
-Run it after a build worth learning from, in the same session or pointed at that session's log. You can skip it after a smooth build.
+Run it after a build worth learning from, in the same session or pointed at that session's log. Feature close-out always includes it, even when the conclusion is that no environment change is needed.
 
 - [code-review](https://aihero.dev/skills-code-review) is the reviewer agent that `retro` most often tunes. New coding standards go where its Standards axis reads them.
 - [writing-for-agents](https://aihero.dev/skills-writing-for-agents) sets the writing style for every steering file and skill that `retro` proposes, and `retro` loads it before it starts.

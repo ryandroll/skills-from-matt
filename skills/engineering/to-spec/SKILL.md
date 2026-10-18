@@ -3,6 +3,12 @@ name: to-spec
 description: "Turn a settled conversation or plan into a spec and tracer-bullet tickets. Use when the user wants to capture agreed decisions, turn a finished grill or wayfinder map into implementation work, or split a spec into tickets with blocking edges and test seams."
 ---
 
+## Keep the feature together
+
+Before the first file write for this feature, call the Skill tool with "git-workflow" and use its task lifecycle. Reuse the feature task when continuing its conversation or map. Otherwise run `task-start --repo <primary> --task-id <feature-slug> --task-id-source <issuer> --session-id <session> --confirm-authorized` from the primary checkout. Move to the returned checkout, use its `environment.TMPDIR`, and continue all feature work there. `task-start` binds the run; when resuming an existing checkout, use `run-start --repo <feature-checkout> --task-id <feature> --task-id-source <issuer> --session-id <session> --expected-head <inspected-head> --confirm-authorized` before writing. Keep the returned task, source and session tokens.
+
+This is task creation before writing, not a stage check. Glossary, ADRs, map, spec and tickets stay in this feature checkout through implementation, review and retro.
+
 This skill takes the current conversation context and codebase understanding and produces a spec and its tickets in one invocation. Do NOT interview the user; just synthesize what you already know.
 
 The issue tracker and triage label vocabulary should have been provided to you. If not, tell the user to run `/setup-matt-pocock-skills`.
@@ -100,13 +106,13 @@ Give each ticket a **Seams** section naming the public seams its tests go at, ta
 
 Give each ticket its **blocking edges**: the other tickets that must complete before it can start. A ticket with no blockers can start immediately.
 
-**Wide refactors are the exception to vertical slicing.** A **wide refactor** is one mechanical change (rename a column, retype a shared symbol) whose **blast radius** fans across the whole codebase, so a single edit breaks thousands of call sites at once and no vertical slice can land green. Don't force it into a tracer bullet; sequence it as **expand–contract**. First expand: add the new form beside the old so nothing breaks. Then migrate the call sites over in batches sized by blast radius (per package, per directory), each batch its own ticket blocked by the expand, keeping CI green batch to batch because the old form still exists. Finally contract: delete the old form once no caller remains, in a ticket blocked by every migrate batch. When even the batches can't stay green alone, keep the sequence but let them share an integration branch that all block a final integrate-and-verify ticket; green is promised only there.
+**Wide refactors are the exception to vertical slicing.** A **wide refactor** is one mechanical change (rename a column, retype a shared symbol) whose **blast radius** fans across the whole codebase, so a single edit breaks thousands of call sites at once and no vertical slice can land green. Don't force it into a tracer bullet; sequence it as **expand–contract**. First expand: add the new form beside the old so nothing breaks. Then migrate the call sites over in batches sized by blast radius (per package, per directory), each batch its own ticket blocked by the expand, keeping CI green batch to batch because the old form still exists. Finally contract: delete the old form once no caller remains, in a ticket blocked by every migrate batch. When even the batches can't stay green alone, keep the sequence but let them share the feature branch that all block a final integrate-and-verify ticket; green is promised only there.
 
 ### 3. Publish the tickets to the configured tracker
 
 Publish the tickets without a separate breakdown approval: the conversation already settled the scope. **How** depends on the tracker `/setup-matt-pocock-skills` configured; the tickets are the same either way, only the shape of the blocking edges changes:
 
-- **Local files** → write one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01` in dependency order (blockers first). Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket file template below: one ticket per file, never a single combined file.
+- **Local files** → write one file per ticket at the durable tracker path named by the project's agent instructions (the "Issue tracker" section), with one `<NN>-<slug>.md` per ticket, numbered from `01` in dependency order (blockers first). Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket file template below: one ticket per file, never a single combined file.
 - **A real issue tracker (GitHub, Linear, …)** → publish one issue per ticket in dependency order (blockers first) so each ticket's blocking edges can reference real identifiers. Use the platform's native blocking relationship where it has one; otherwise set each ticket's "Blocked by" to the blocking issues. If the source was an existing issue, make each ticket its sub-issue (tracker doc's operation). Apply the `ready-for-agent` triage label unless instructed otherwise; the tickets are agent-grabbable by construction.
 
 Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.
@@ -163,4 +169,4 @@ In either form, avoid specific file paths or code snippets: they go stale fast. 
 
 ### 4. Present the breakdown
 
-In the final message, link the spec and present the published tickets as a numbered list. For each ticket, show its title, blocking edges, and the end-to-end behaviour it delivers.
+Commit the feature's durable planning files through git-workflow's `commit-input` then `commit` route with literal paths, keeping the feature task open. In the final message, name the feature task and checkout, link the spec and present the published tickets as a numbered list. For each ticket, show its title, blocking edges, and the end-to-end behaviour it delivers.

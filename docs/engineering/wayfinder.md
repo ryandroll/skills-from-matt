@@ -15,12 +15,14 @@ It is the heaviest flow in the set, so the trigger is narrow. The effort must be
 | A well-scoped feature you can settle in one sitting | [grill-with-docs](https://aihero.dev/skills-grill-with-docs) |
 | A greenfield project, or a build spanning many sessions, with the route still unclear | `/wayfinder` |
 | A thread where the deciding is already done | [to-spec](https://aihero.dev/skills-to-spec): skip straight past the map |
-| A cleared wayfinder map | [to-spec](https://aihero.dev/skills-to-spec) and [implement](https://aihero.dev/skills-implement) |
+| A cleared wayfinder map | [to-spec](https://aihero.dev/skills-to-spec) and [implement-spec](https://aihero.dev/skills-implement-spec) |
 | An existing session that has already grown too big | say "hand off to `/wayfinder`" ([handoff](https://aihero.dev/skills-handoff) bridges into a map as well as out of one) |
 
 Greenfield is not a requirement. People use wayfinder routinely on legacy and half-built codebases, and it can be more useful there, because much of the fog is "what is already true here" rather than "what should we do".
 
 ## Prerequisites
+
+Git-workflow must be available. Before its first file write, the skill opens the feature task and continues in that checkout. Later planning sessions reuse it, so glossary, decisions, map, spec and tickets stay on one feature branch. Planning files are committed there before implementation tickets start; `main` remains untouched until the feature is settled.
 
 The map and its tickets live on the repo's issue tracker, so wayfinder needs the tracker setup from [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills). That step writes a "Wayfinding operations" section. The section describes how to express the map, its child tickets, blocking edges, and frontier queries on GitHub, GitLab, or local markdown. Wayfinder finds that doc through the pointer in your `CLAUDE.md` / `AGENTS.md`, not at a fixed path. With no tracker configured, it falls back to local markdown files.
 
@@ -47,7 +49,7 @@ Every ticket carries a `wayfinder:<type>` label. Each ticket is either **[HITL](
 | --- | --- | --- | --- |
 | `grilling` | HITL | The default. The question can be settled by talking it through. | [grilling](https://aihero.dev/skills-grilling) plus [domain-modeling](https://aihero.dev/skills-domain-modeling), in a fresh session |
 | `prototype` | HITL | "How should this look" or "how should this behave": a question talking cannot settle. | [prototype](https://aihero.dev/skills-prototype), with a link from the ticket to the built artifact |
-| `research` | AFK | A fact outside the working directory is blocking a decision. | A [research](https://aihero.dev/skills-research) [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent), started when you chart the map and run in parallel on a `research/<name>` branch |
+| `research` | AFK | A fact outside the working directory is blocking a decision. | A [research](https://aihero.dev/skills-research) [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent), started when you chart the map, returning findings for the feature session to file and link |
 | `task` | Either | Nothing to decide, but manual work blocks a decision, such as provisioning access, signing up for a service, or moving data so you can see its shape. | The agent alone where it can, otherwise a precise checklist for the human |
 
 `task` is the only type that *does* rather than decides. It belongs on the map only because it unblocks a decision, never because it delivers part of the destination. This type goes wrong most often in practice. Agents read it as an implementation step and start to write product code inside the map.
@@ -75,7 +77,7 @@ This question is verbatim from a user report, and others report the same outcome
 The frontier shows you which tickets you can take, and blocking edges make parallel work safe on paper. In practice, one ticket at a time is the safer default. If you work two grilling tickets at once, one session can ask you a question you just answered in the other, because the sessions share no [context](https://www.aihero.dev/ai-coding-dictionary/context). Prototype tickets have a known gap too. One user reported an agent that built three UI variations, chose one itself, and closed the ticket. That choice is yours, and the skill does not yet say so clearly enough. If you do run tickets in parallel, review the dependency graph yourself first.
 
 **Do I have to use GitHub Issues?**
-No. Any issue tracker works. GitHub has the best support, because its native sub-issues and blocking relationships make the frontier visible without opening the map. People also use GitLab, Linear, Jira and local markdown. There are two caveats. On a tracker with no native blocking, wayfinder infers the dependency graph from text, and you must correct it by hand. Local markdown puts the artifacts in your repo, which is not recommended, because material stored in the repo tends to persist by accident. Open-source maintainers hit the opposite problem (public trackers fill up with agent-generated planning tickets) and often choose local markdown anyway.
+No. Any issue tracker works. GitHub has the best support, because its native sub-issues and blocking relationships make the frontier visible without opening the map. People also use GitLab, Linear, Jira and local markdown. There are two caveats. On a tracker with no native blocking, wayfinder infers the dependency graph from text, and you must correct it by hand. Local markdown keeps the artifacts at the durable tracker path in the feature checkout so they survive task retirement. Open-source maintainers hit the opposite problem (public trackers fill up with agent-generated planning tickets) and often choose local markdown anyway.
 
 **The grilling is exhausting. Every question is three paragraphs long.**
 This is the sharpest open complaint about wayfinder, and nobody has fixed it yet. One user broke it down this way: the verbosity itself causes decision exhaustion, and the length hides *why* the agent asks a question, so you lose the chain from decision to decision as the map grows. The verbosity looks like a property of the current set of [models](https://www.aihero.dev/ai-coding-dictionary/model) rather than of the skill. Users try two mitigations: a lower [reasoning effort](https://www.aihero.dev/ai-coding-dictionary/effort), and a plain-language instruction in your global `CLAUDE.md`. Expect to think hard here anyway. Wayfinder demands a lot of thinking from you, and that is most of its purpose, not a defect.
@@ -87,6 +89,8 @@ There is no official guidance, and the agent's default is unhelpful. It tends to
 It is this skill. v1.1 renamed it to `wayfinder`, and you invoke it as `/wayfinder`. "Decision map" was jargon, and it was also inaccurate, because only one of the four ticket types is a decision by itself. The new name gave the skill one consistent vocabulary (destination, fog of war, frontier, the map) instead of an invented term on top. The unit kept the word "decision": a wayfinder ticket is a **decision ticket**, so that people do not read it as an implementation ticket.
 
 ## It's working if
+
+- The first file write is in the feature checkout, and the next planning step keeps using that task.
 
 - The destination is written down and agreed before a single ticket exists.
 - Every open ticket reads as a question. Any ticket that reads "build the X" is either mis-typed or belongs downstream of the map.

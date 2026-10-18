@@ -95,6 +95,9 @@ for (const bucket of readdirSync(skillsRoot, { withFileTypes: true })) {
   }
 }
 
+// git-workflow is an installed model-invoked skill at user scope, absent from this tree.
+if (!skills.has("git-workflow")) skills.set("git-workflow", { userInvoked: false });
+
 // Recognises with "x", twice, for "x" and "y", and backticks; unquoted names are not checked.
 const calls = /\bcall(?:s|ing)?\s+the\s+Skill\s+tool\s+(?:with\s+(["'`])([^"'`]+)\1|twice,\s*for\s+(["'`])([^"'`]+)\3\s+and\s+(["'`])([^"'`]+)\5)/gi;
 for (const { file, source } of markdown) {

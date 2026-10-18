@@ -12,6 +12,10 @@ Reach for it the moment you hit a question you can't settle by talking: a state 
 
 You will also arrive here without choosing to. [wayfinder](https://aihero.dev/skills-wayfinder) files `prototype` decision [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) on its map, and you work one with this skill.
 
+## Prerequisites
+
+Git-workflow must be available. The skill opens its own prototype task from the primary checkout, using a separate lifecycle run if the session is already bound to a feature, then checks its skill-owned checkout, open task and bound run before touching a file. A failed check stops with the exact next command.
+
 ## Two branches
 
 The question picks the branch, and the branches produce different artifacts:
@@ -25,14 +29,14 @@ Both keep state in memory, start with no setup, and show you the full state afte
 
 A finished prototype leaves two things, and they go to different places.
 
-You record the **answer** (the verdict plus the question it settled) somewhere permanent: a commit message, an ADR, the implementation issue. Main keeps the answer, in the real code.
+You record the **answer** (the verdict plus the question it settled) somewhere permanent: a commit message, an ADR, the implementation issue. The feature session later carries the answer into real code; the prototype session does not write into that checkout.
 
-The **prototype** is the runnable evidence the answer came from, and you do not delete it. It doesn't belong in main either, because nobody maintains it and it goes stale fast. So you commit it to a throwaway `prototype/<name>` branch out of main, never merge it, and leave a [context pointer](https://www.aihero.dev/ai-coding-dictionary/context-pointer) to that branch on the implementation issue. Main stays clean, and whoever picks the work up next can find and re-run the prototype.
+The **prototype** is the runnable evidence the answer came from, and you do not delete it. It doesn't belong in main either, because nobody maintains it and it goes stale fast. The skill commits it through git-workflow on its own task branch, closes the session with that branch retained, retires the worktree, and leaves a [context pointer](https://www.aihero.dev/ai-coding-dictionary/context-pointer) to that branch on the implementation issue. Main stays clean, and whoever picks the work up next can find and re-run the prototype.
 
 ## Common questions
 
 **Wait, isn't the prototype supposed to be deleted?**
-Not any more. It used to be: build it, keep the answer, bin the code. The strongest objection to that was not about speed. It was *who picks up the work next [session](https://www.aihero.dev/ai-coding-dictionary/session), and what do they have to work from?* A prose summary of a prototype loses the thing that made it convincing. So the skill now treats the prototype as a [primary source](https://www.aihero.dev/ai-coding-dictionary/primary-source). It lands on a `prototype/<name>` branch out of main and the implementation issue points at it. What changed is where the code lives, not the discipline; it still never merges into main.
+Not any more. It used to be: build it, keep the answer, bin the code. The strongest objection to that was not about speed. It was *who picks up the work next [session](https://www.aihero.dev/ai-coding-dictionary/session), and what do they have to work from?* A prose summary of a prototype loses the thing that made it convincing. So the skill now treats the prototype as a [primary source](https://www.aihero.dev/ai-coding-dictionary/primary-source). It lands on a prototype task branch out of main and the implementation issue points at it. What changed is where the code lives, not the discipline; it still never merges into main.
 
 **It used to build a terminal app. Where did that go?**
 The logic branch now emits a single shareable HTML file instead. A terminal app can only be driven by someone with the repo cloned and a runtime installed, which rules out the people whose opinion the prototype needs: the designer, the PM, the domain expert who knows what the state model is supposed to mean. One self-contained file that opens by double-click and still works after being emailed can be driven by anyone. The pure logic module underneath is unchanged, and is still the part you move into the real code.
@@ -56,7 +60,7 @@ It can be, if you prototype questions you could have answered by talking, or let
 - Someone says "wait, that shouldn't be possible" or "huh, I assumed X". That's a bug in the *idea*, which is what the prototype is for.
 - The UI variants disagree about layout and information hierarchy, not just colour and copy, and the feedback you get is "the header from B with the sidebar from C".
 - It is answered in one sitting. If you're still building it a day later, the question was too big; split it.
-- When it's over, main contains the decision and none of the prototype, and the implementation issue points at the branch that still holds it.
+- When it is over, the prototype branch retains the demo, its worktree is retired, and the feature has a pointer to the answer. `main` is unchanged.
 
 ## Where it fits
 

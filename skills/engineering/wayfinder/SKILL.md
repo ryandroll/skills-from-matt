@@ -4,6 +4,12 @@ description: Plan a huge chunk of work (more than one agent session can hold) as
 disable-model-invocation: true
 ---
 
+## Keep the feature together
+
+Before the first file write for this feature, call the Skill tool with "git-workflow" and use its task lifecycle. Reuse the feature task when continuing its conversation or map. Otherwise run `task-start --repo <primary> --task-id <feature-slug> --task-id-source <issuer> --session-id <session> --confirm-authorized` from the primary checkout. Move to the returned checkout, use its `environment.TMPDIR`, and continue all feature work there. `task-start` binds the run; when resuming an existing checkout, use `run-start --repo <feature-checkout> --task-id <feature> --task-id-source <issuer> --session-id <session> --expected-head <inspected-head> --confirm-authorized` before writing. Keep the returned task, source and session tokens.
+
+This is task creation before writing, not a stage check. Glossary, ADRs, map, spec and tickets stay in this feature checkout through implementation, review and retro. Commit durable planning files through git-workflow's `commit-input` then `commit` route with literal paths before ticket tasks are cut from the feature branch.
+
 A loose idea has arrived, too big for one agent session, and wrapped in fog: the way from here to the **destination** isn't visible yet. Wayfinding is about finding that way, not charging at the destination. This skill charts the way as a **shared map** on the repo's issue tracker, then works its **decision tickets** (questions whose resolution is a decision, not slices of a build to execute) one at a time until the route is clear.
 
 The destination varies per effort, and naming it is the first act of charting: it shapes every ticket. It might be a spec to hand off and iterate on, a decision to lock before planning starts, or a change made in place like a data-structure migration. The map is domain-agnostic: engineering work, course content, whatever fits the shape.
@@ -112,7 +118,7 @@ User invokes with a loose idea.
 2. **Map the frontier.** Grill again, **breadth-first** this time: fan out across the whole space rather than deep on any one thread, surfacing the open decisions and the first steps takeable now. **If this surfaces no fog** (the way to the destination is already clear, the whole journey small enough for one session), you don't need a map. Stop and ask the user how they'd like to proceed.
 3. **Create the map** (label `wayfinder:map`): Destination and Notes filled in, Decisions-so-far empty, the fog sketched into **Not yet specified**.
 4. **Create the tickets you can specify now** as child issues of the map, then wire blocking edges in a **second pass** (issues need ids before they can reference each other). Write cross-references in that pass too, with real ids: a placeholder `#<n>` auto-links to an unrelated issue. Wiring sorts them into the frontier and the blocked; everything you can't yet specify stays in the fog: the **Not yet specified** section.
-5. **Fire the research subagents.** For each `research` ticket you just created, spin up a subagent that calls the Skill tool with "research" to resolve it in parallel, capturing its findings on a throwaway `research/<name>` branch with a context pointer from the ticket. Push the branch but open no PR: it is never merged.
+5. **Fire the research subagents.** For each `research` ticket you just created, spin up a subagent that calls the Skill tool with "research" to resolve it in parallel, returning its findings to this session. File the findings in the feature checkout and link them from the ticket; keep publication for an explicit operator request through git-workflow's `publish-push-plan`/`publish-push-apply` route.
 6. Stop: charting is one session's work; it hand-resolves nothing.
 
 ### Work through the map

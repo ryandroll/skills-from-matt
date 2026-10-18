@@ -20,17 +20,32 @@ You invoke this by typing `/ask-matt`; the agent won't reach for it on its own.
 
 The router names skills; it does not install them. Everything it points at has to be installed for the recommendation to be actionable, and it only knows the promoted skills in this repo.
 
-The tracker-dependent routes (triage, `to-spec`, `implement`) assume [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) has already configured an issue tracker in the repo. The router recommends them even before that has happened.
+Run [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) before your first engineering flow to configure the issue tracker, triage labels and doc layout. Custom issue trackers also work.
+
+The tracker-dependent routes follow the "Issue tracker" section of the project's agent instructions, written by project-init. That pointer locates the durable spec and tickets. Git-workflow supplies the task lifecycle.
 
 ## Flows, not skills
 
 The skill's leading word is **flow**, a path *through* the skills rather than a single skill. When you name your situation, the router places you at a step on a flow. That is a different answer from "here is the skill that matches your keywords". There are five kinds of route, and the skill itself describes them in full:
 
-- **The main flow**, idea to ship. Grill, spec, tickets, implement (one ticket at a time, or the whole task graph in parallel with [implement-spec](https://aihero.dev/skills-implement-spec)), review, then [retro](https://aihero.dev/skills-retro), which feeds what the build taught back into the agent's environment. It has two branches. One is a prototype detour, for when a question needs runnable code to settle it. The other is how you implement the tickets. `grill-with-docs` ends by calling `to-spec`, which writes both the spec and tickets; a settled conversation or map can also enter at `to-spec` directly.
+- **The main flow**, idea to ship. Grill, spec, tickets, implement (one independent change with [implement](https://aihero.dev/skills-implement), or a feature graph with [implement-spec](https://aihero.dev/skills-implement-spec)), review, then [retro](https://aihero.dev/skills-retro), which feeds what the build taught back into the agent's environment. It has two branches. One is a prototype detour, for when a question needs runnable code to settle it. The other is how you implement the tickets. `grill-with-docs` ends by calling `to-spec`, which writes both the spec and tickets; a settled conversation or map can also enter at `to-spec` directly.
 - **On-ramps**, for a situation that generates work and then merges onto the main flow: incoming bug reports, something broken, or an effort too foggy and too large to hold in one session.
 - **Codebase health**, upkeep rather than feature work. [setup-deep-modules](https://aihero.dev/skills-setup-deep-modules) runs once per repository to enforce entry points and sans-I/O cores through the normal check command. [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture) surveys the code for deepening opportunities, and each one it finds re-enters the main flow as an idea.
 - **Standalones**, which sit off every flow and which you use on their own: the prototype, the questionnaire, the research run.
 - **A vocabulary layer underneath**, the two references the other skills pull in when the words rather than the process are the problem.
+
+## Feature tasks and ticket tasks
+
+| Work | Route |
+| --- | --- |
+| First feature file | The first planning skill opens the feature task before writing; later planning reuses it. |
+| A feature with tickets | `implement-spec` opens each ticket from the feature branch, checks its target, and settles it into the feature itself. Review and retro precede feature completion and primary-session settlement into `main`. |
+| A small change or bug fix after diagnosis | `implement` uses one task straight to `main`. |
+| Code about to be written | `implement`, `tdd` and `prototype` check the checkout, open task and bound run; `implement-spec` also checks feature capacity and each ticket's base. Failure stops with the next command. |
+| A prototype | Its own task ends with a retained branch and retired worktree. |
+| Moving sessions | `handoff` carries the feature identity, checkout and run tokens. |
+
+The skills drive these transitions; publication requires a separate request.
 
 ## The phase boundary
 
@@ -54,7 +69,7 @@ People keep asking for one in the README. This skill is that list. A static tabl
 
 **It told me half the skills aren't installed.**
 
-This is a known bug, and it is not fixed. Most of the skills the router routes you through set `disable-model-invocation: true`, which means the harness leaves them out of the skill list it injects into the agent's context. The agent reads that list as exhaustive and reports them missing. In one reported session, it declared the whole spec-and-tickets flow absent and rerouted to bare `/grilling` and `/tdd`. Fourteen of the plugin's twenty-six skills carry the flag, so this is the common case rather than an edge. They are installed. Type the slash command anyway, or check `.claude-plugin/plugin.json`, which is the authority on what is present.
+This is a known bug, and it is not fixed. Most of the skills the router routes you through set `disable-model-invocation: true`, which means the harness leaves them out of the skill list it injects into the agent's context. The agent reads that list as exhaustive and reports them missing. In one reported session, it declared the whole spec-and-tickets flow absent and rerouted to bare `/grilling` and `/tdd`. Thirteen of the plugin's twenty-six skills carry the flag, so this is the common case rather than an edge. They are installed. Type the slash command anyway, or check `.claude-plugin/plugin.json`, which is the authority on what is present.
 
 **It described a skill's behaviour, and the skill doesn't do that.**
 
