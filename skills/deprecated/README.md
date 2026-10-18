@@ -1,3 +1,6 @@
 # Deprecated
 
-Skills I no longer use. This bucket is currently empty: a retired skill is deleted, and the changeset that removes it names whatever replaced it.
+Skills no longer used in this edition.
+
+- **[grill-me](./grill-me/SKILL.md)**: Retired interview wrapper, replaced by `grill-with-docs`.
+- **[to-tickets](./to-tickets/SKILL.md)**: Retired ticket breakdown step, folded into `to-spec`.

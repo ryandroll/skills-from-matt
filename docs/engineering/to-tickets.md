@@ -1,3 +1,5 @@
+> **Archived.** Retired in the unreleased agent-hub edition based on v1.3.1. Use [to-spec](https://aihero.dev/skills-to-spec) instead. The original page follows.
+
 ## What it does
 
 `to-tickets` takes a plan, a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), or the conversation you are in, and breaks it into a set of **[tickets](https://www.aihero.dev/ai-coding-dictionary/ticket)** on your issue tracker. Each ticket declares its **blocking edges**: the other tickets that have to finish before it can start.

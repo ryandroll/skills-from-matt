@@ -2,7 +2,7 @@
 
 `triage` works through the issues on your project's tracker. It moves each one through a small state machine of **triage roles** (a category role and a state role). Each issue ends as an agent-ready brief, a specific question for the reporter, or a closed issue with a recorded reason.
 
-It is only for issues **you didn't create**. That means raw bug reports, incoming feature requests, or an external pull request that arrived unannounced: work that came into the tracker from outside, in whatever shape the reporter left it. [Tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) from [to-tickets](https://aihero.dev/skills-to-tickets) are already agent-ready, so if you run `triage` over them, you waste the work. The rule is simple: `/triage` is only for incoming issues, not for issues you created yourself.
+It is only for issues **you didn't create**. That means raw bug reports, incoming feature requests, or an external pull request that arrived unannounced: work that came into the tracker from outside, in whatever shape the reporter left it. [Tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) from [to-spec](https://aihero.dev/skills-to-spec) are already agent-ready, so if you run `triage` over them, you waste the work. The rule is simple: `/triage` is only for incoming issues, not for issues you created yourself.
 
 It also differs from labelling by hand because it recommends and then waits. It gives you its category and state call with reasoning, plus what it found in the codebase, and applies nothing until you tell it to.
 
@@ -15,7 +15,7 @@ You invoke this by typing `/triage` and then describing what you want in plain l
 | A tracker full of raw reports from other people | `/triage` |
 | A rough idea of your own, nothing written down | [grill-with-docs](https://aihero.dev/skills-grill-with-docs) |
 | A settled conversation to turn into a [spec](https://www.aihero.dev/ai-coding-dictionary/spec) | [to-spec](https://aihero.dev/skills-to-spec) |
-| A spec to split into agent-ready tickets | [to-tickets](https://aihero.dev/skills-to-tickets) |
+| A spec to split into agent-ready tickets | [to-spec](https://aihero.dev/skills-to-spec) |
 | A confirmed bug that needs a root cause, not a label | [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs) |
 
 ## Prerequisites
@@ -68,10 +68,10 @@ Discovery shows only *external* PRs, because a collaborator's in-progress branch
 
 ## Common questions
 
-**I ran `/to-spec` and `/to-tickets`, and now those tickets are sitting there untriaged. Do I run `/triage` over them?**
-No. They are already agent-ready. `to-tickets` applies the `ready-for-agent` label when it publishes them, so an AFK runner picks them up without another pass. The user who hit this had run the spec flow and seen `needs-triage` on the output, and their AFK runner ignored everything. `triage` is the on-ramp for work that arrives from outside. The spec flow is the lane for work you start yourself. The two meet at `ready-for-agent`, not before.
+**I ran `/to-spec`, and now those tickets are sitting there untriaged. Do I run `/triage` over them?**
+No. They are already agent-ready. `to-spec` applies the `ready-for-agent` label when it publishes them, so an AFK runner picks them up without another pass. The user who hit this had run the spec flow and seen `needs-triage` on the output, and their AFK runner ignored everything. `triage` is the on-ramp for work that arrives from outside. The spec flow is the lane for work you start yourself. The two meet at `ready-for-agent`, not before.
 
-**Is `triage` still relevant now that there's a `to-spec` → `to-tickets` → `implement` flow?**
+**Is `triage` still relevant now that there's a `to-spec` → `implement` flow?**
 Only if you have inbound work. `triage` is older than that flow and does a different job: it handles reports other people filed. If everything in your tracker came from your own planning, you will rarely use it. If you maintain anything public, or your team files bugs to you, it is where that work starts. The main use is open-source repos that take issues from external contributors.
 
 **The agent tried to apply `ready-for-agent` and `gh` said the label doesn't exist.**
@@ -106,4 +106,4 @@ Yes. The tracker is config, not a hard-coded assumption. People run it against L
 
 ## Where it fits
 
-`triage` is an **on-ramp**, not a step in the main chain. The main flow starts from an idea you had (grill, spec, tickets, implement, review). `triage` is the parallel lane for work that came from someone else. Both lanes end at the same place: an issue labelled `ready-for-agent` with a brief on it. [implement](https://aihero.dev/skills-implement) picks that up the same way it picks up a ticket from [to-tickets](https://aihero.dev/skills-to-tickets). When a request needs more detail before `triage` can brief it, `triage` runs [grilling](https://aihero.dev/skills-grilling) and [domain-modeling](https://aihero.dev/skills-domain-modeling) together, one round of questions at a time, so it records decisions in `GLOSSARY.md` and the ADRs as you make them. When you're not sure which lane you are in, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+`triage` is an **on-ramp**, not a step in the main chain. The main flow starts from an idea you had (grill, spec, tickets, implement, review). `triage` is the parallel lane for work that came from someone else. Both lanes end at the same place: an issue labelled `ready-for-agent` with a brief on it. [implement](https://aihero.dev/skills-implement) picks that up the same way it picks up a ticket from [to-spec](https://aihero.dev/skills-to-spec). When a request needs more detail before `triage` can brief it, `triage` runs [grilling](https://aihero.dev/skills-grilling) and [domain-modeling](https://aihero.dev/skills-domain-modeling) together, one round of questions at a time, so it records decisions in `GLOSSARY.md` and the ADRs as you make them. When you're not sure which lane you are in, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
