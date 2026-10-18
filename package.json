@@ -11,6 +11,7 @@
   "scripts": {
     "changeset": "changeset",
     "version": "changeset version && node scripts/sync-plugin-version.mjs",
+    "check-invocation": "node scripts/check-invocation.mjs",
     "check-plugin-version": "node scripts/sync-plugin-version.mjs --check"
   },
   "devDependencies": {

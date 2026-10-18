@@ -12,13 +12,13 @@ You invoke this by typing `/implement-spec`, and the agent won't reach for it on
 | --- | --- |
 | A spec, split into tickets with blocking edges, that you want landed in one run | `/implement-spec` |
 | One ticket at a time, in your own [context window](https://www.aihero.dev/ai-coding-dictionary/context-window), [clearing](https://www.aihero.dev/ai-coding-dictionary/clearing) between tickets | [implement](https://aihero.dev/skills-implement) |
-| A spec that isn't split into tickets yet | [to-tickets](https://aihero.dev/skills-to-tickets) first |
+| A spec that isn't split into tickets yet | [to-spec](https://aihero.dev/skills-to-spec) first |
 | A small piece of work with no real graph to it | [implement](https://aihero.dev/skills-implement) directly |
 
 ## Prerequisites
 
 - **An issue tracker.** The skill reads the tickets from, and resolves them on, the tracker [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) configured. If none has been configured, it stops and tells you to run that first rather than guessing.
-- **Tickets with blocking edges**, as [to-tickets](https://aihero.dev/skills-to-tickets) writes them. Without edges the graph is flat and every ticket starts at once.
+- **Tickets with blocking edges and Seams sections**, as [to-spec](https://aihero.dev/skills-to-spec) writes them. Without edges the graph is flat and every ticket starts at once.
 - **A [harness](https://www.aihero.dev/ai-coding-dictionary/harness) that runs subagents in the background and gives each one a git worktree.** The skill exists to run tickets at the same time, so on a harness that runs subagents one at a time, it is only a slower `implement`.
 
 ## The integration branch
@@ -26,7 +26,7 @@ You invoke this by typing `/implement-spec`, and the agent won't reach for it on
 Everything lands on one branch. Each implementer:
 
 1. confirms its worktree is based on the integration branch before it starts,
-2. builds its ticket with [tdd](https://aihero.dev/skills-tdd), red-green one slice at a time,
+2. always calls [tdd](https://aihero.dev/skills-tdd) at the seams in its ticket's Seams section, red-green one slice at a time,
 3. merges the integration branch tip into its own branch before reporting done, so landing it is a fast-forward.
 
 The tracker decides whether a pull request exists at all. If your tracker closes work through PRs, or you ask for one, the skill opens a draft PR after the first merge and marks it ready at the end. Otherwise the run stops on the integration branch with every ticket resolved the way your tracker closes work, which works fully offline against a local markdown tracker.
@@ -49,7 +49,7 @@ Both happen when `code-review` runs anywhere other than the one point the skill 
 
 **Does it drive tdd like implement does?**
 
-It does now, though it didn't at first. Users running the in-progress version noticed that "the implementer subagents don't inherit the /tdd directive", so red-green stopped as soon as they scaled up from one ticket to a whole spec. Each implementer now builds its ticket with `tdd`. There is still no step where you agree seams interactively, as there is in an `implement` session, so name the seams in the spec or the tickets if you want them pinned.
+It does now, though it didn't at first. Users running the in-progress version noticed that "the implementer subagents don't inherit the /tdd directive", so red-green stopped as soon as they scaled up from one ticket to a whole spec. Every ticket's implementer calls `tdd` unconditionally. The ticket's Seams section carries the agreement from the spec. A ticket without it stops for repair through `to-spec`; the implementer never skips tests.
 
 **Two implementers running in parallel collided on the same file, or picked different names for the same thing.**
 
@@ -80,7 +80,7 @@ A worktree holds only what git tracks. Tests that read gitignored fixtures, loca
 `implement-spec` is the build step of the main chain, as the parallel alternative to running [implement](https://aihero.dev/skills-implement) once per ticket:
 
 ```txt
-grill-with-docs → to-spec → to-tickets → implement-spec → retro
+grill-with-docs → to-spec → implement-spec → retro
 ```
 
-Its neighbours are [to-tickets](https://aihero.dev/skills-to-tickets), which declares the blocking edges it reads as a task graph, and [code-review](https://aihero.dev/skills-code-review), which it runs over the integration branch before closing out. [ask-matt](https://aihero.dev/skills-ask-matt) is the router over the whole set when you are not sure which flow you are in.
+Its neighbours are [to-spec](https://aihero.dev/skills-to-spec), which declares the blocking edges it reads as a task graph, and [code-review](https://aihero.dev/skills-code-review), which it runs over the integration branch before closing out. [ask-matt](https://aihero.dev/skills-ask-matt) is the router over the whole set when you are not sure which flow you are in.
