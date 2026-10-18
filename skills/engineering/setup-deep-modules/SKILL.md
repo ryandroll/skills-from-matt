@@ -86,6 +86,6 @@ Save the original bytes before each plant and restore them even if a command fai
 
 Write a short README beside the packages: the layout, public entry points, the four shape rules, the sans-I/O core, actual coverage limits, and the umbrella command. Discourage barrels and show the copy-me layout.
 
-Add one pointer line to `AGENTS.md`, or `CLAUDE.md` when that is the only agent instructions file; create `AGENTS.md` if neither exists. For example: `Packages are deep modules: see [src/packages/README.md](./src/packages/README.md) before adding or importing one.` For Rust, include the clippy-then-test pair in that same line. Merge an existing pointer instead of duplicating it.
+Add one pointer line to `AGENTS.md`, or the harness's instructions file when that is the only one; create `AGENTS.md` if neither exists. For example: `Packages are deep modules: see [src/packages/README.md](./src/packages/README.md) before adding or importing one.` For Rust, include the clippy-then-test pair in that same line. Merge an existing pointer instead of duplicating it.
 
 **Done when:** the README describes the checks actually proved, and the instructions file points to it.

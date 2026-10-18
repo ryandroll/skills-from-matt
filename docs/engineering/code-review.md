@@ -1,8 +1,10 @@
 ## What it does
 
-`code-review` reviews the diff between `HEAD` and a fixed point you name, or the task's base commit recorded in its task receipt along two axes. **Standards** asks whether the code follows how this repo writes code. **Spec** asks whether the code does what the originating issue or [spec](https://www.aihero.dev/ai-coding-dictionary/spec) asked for. Each axis runs in its own [sub-agent](https://www.aihero.dev/ai-coding-dictionary/subagent) so neither sees the other's reasoning.
+`code-review` reviews the diff between `HEAD` and a fixed point you name, or the task's base commit recorded in its task receipt along two axes. **Standards** asks whether the code follows how this repo writes code. **Spec** asks whether the code does what the originating issue or [spec](https://www.aihero.dev/ai-coding-dictionary/spec) asked for. Each axis runs in its own reviewer [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) so neither sees the other's reasoning.
 
 The skill never merges or re-ranks the two axes. The report ends with a worst issue *per axis* and declines to name a single winner across them. A change can pass one axis and fail the other. Code that follows every convention but implements the wrong thing passes Standards and fails Spec. Code that does exactly what the [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket) asked but breaks the repo's conventions does the reverse. A blended verdict lets the passing axis hide the failing one.
+
+Reviewers report findings and do not edit. The primary applies accepted fixes itself or through an implementer, one writer per checkout. Per-ticket axes use the default reviewer tier; the whole-branch review before the feature settles uses the strongest tier.
 
 ## When to reach for it
 
@@ -83,6 +85,7 @@ No. It reviews the committed diff from the fixed point's merge-base to HEAD. `im
 ## It's working if
 
 - It refuses to start on a bad ref or an empty diff, before any sub-agent is spawned.
+- Reviewers leave the checkout unchanged and return findings to the primary.
 - The report arrives as two separate blocks under `## Standards` and `## Spec`, not one merged list.
 - Every Standards finding names either a rule in one of your repo's files or one of the twelve smells, with the hunk quoted; every Spec finding quotes a line of the spec.
 - The closing summary gives a worst issue per axis and declines to pick an overall winner.
@@ -92,7 +95,7 @@ No. It reviews the committed diff from the fixed point's merge-base to HEAD. `im
 
 `code-review` is the review step near the tail of the build chain: `grill-with-docs → to-spec → implement → code-review → retro`. It also stands alone on any branch or PR you point it at.
 
-- [implement](https://aihero.dev/skills-implement) is the closest neighbour. It drives the build and calls this skill as its own closing review after committing verified work. [implement-spec](https://aihero.dev/skills-implement-spec) does the same once, over the whole feature branch.
+- [implement](https://aihero.dev/skills-implement) is the closest neighbour. It drives the build and calls this skill as its own closing review after committing verified work. [implement-spec](https://aihero.dev/skills-implement-spec) reviews each ticket against its own requirements, then the whole feature branch at the strongest tier.
 - [retro](https://aihero.dev/skills-retro) comes after it and tunes it. When a session shows the review missing a class of mistake, `retro` proposes the check or the `CODING_STANDARDS.md` rule the Standards axis then reads.
 - [to-spec](https://aihero.dev/skills-to-spec) produces the document the Spec axis checks against, so a vague spec makes that axis vague.
 - [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture) is the whole-codebase counterpart, because this skill only looks at one diff.

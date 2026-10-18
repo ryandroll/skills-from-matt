@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Check the invocation metadata and explicit Skill tool dependencies.
+// Check invocation metadata, explicit Skill tool dependencies and role naming.
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { basename, dirname, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,6 +10,7 @@ const errors = [];
 const skills = new Map();
 const markdown = [];
 const counts = { "user-invoked": 0, "model-invoked": 0 };
+const roleNamesOnly = /\b(?:codex exec|codex|claude|opus|sonnet|haiku|gpt|gemini|cursor|spawn_agent)\b/gi;
 
 function walk(directory) {
   return readdirSync(directory, { withFileTypes: true })
@@ -57,6 +58,13 @@ for (const bucket of readdirSync(skillsRoot, { withFileTypes: true })) {
     const file = relative(repo, path).split(sep).join("/");
     const source = readFileSync(path, "utf8");
     markdown.push({ file, source });
+    if (["engineering", "productivity"].includes(bucket.name) && dirname(path) !== join(skillsRoot, bucket.name)) {
+      for (const [index, line] of source.split(/\r?\n/).entries()) {
+        for (const match of line.matchAll(roleNamesOnly)) {
+          errors.push(`${file}:${index + 1}: name a role or the harness instead of "${match[0]}"`);
+        }
+      }
+    }
     if (!path.endsWith(`${sep}SKILL.md`)) continue;
     const directoryName = basename(dirname(path));
     let skillName = directoryName;
@@ -117,4 +125,5 @@ if (errors.length) {
   process.exitCode = 1;
 } else {
   console.log("Invocation checks passed.");
+  console.log("Promoted skill role naming checks passed.");
 }

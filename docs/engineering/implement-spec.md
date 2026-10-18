@@ -27,11 +27,13 @@ Everything lands on one branch. Each implementer:
 
 1. starts in a ticket task cut from the feature branch, with its base and integration target checked before launch,
 2. always calls [tdd](https://aihero.dev/skills-tdd) at the seams in its ticket's Seams section, red-green one slice at a time,
-3. commits through git-workflow, refreshes from the feature tip and verifies it, then declares the ticket complete.
+3. reports the changes and verification results without committing. It writes only in its assigned ticket checkout.
 
-The orchestrating session settles tickets from the feature checkout under the feature run. Settlement integrates each ticket and retires its checkout. The feature refreshes after each settlement and before review. After the last ticket, review fixes land through the same route, then retro presents candidates. This session makes and commits every change you accept in the feature checkout, then refreshes, verifies and completes the feature. The final output gives the primary session its settlement commands. Publishing is a separate operator request.
+The primary takes over after the implementer reports, commits verified changes through git-workflow, and runs code-review against that ticket's base and spec. It applies accepted fixes itself or through the implementer, one writer at a time, then verifies and commits them. The primary refreshes and completes the ticket before settling it from the feature checkout under the feature run. Settlement integrates each ticket and retires its checkout. The feature refreshes after each settlement and before review. After the last ticket, reviewers at the strongest tier review the whole feature. Review fixes land through the same route, then retro presents candidates. This session makes and commits every change you accept in the feature checkout, then refreshes, verifies and completes the feature. The final output gives the primary session its settlement commands. Publishing is a separate operator request.
 
 Implementers talk to the orchestrator through [context pointers](https://www.aihero.dev/ai-coding-dictionary/context-pointer) (the spec, the ticket, shared exploration notes, earlier commits) rather than pasted summaries. This keeps each subagent's prompt small and leaves room in the orchestrator's window for the graph.
+
+An explorer can report shared facts before implementation; the primary saves those notes in the task's temporary directory. Concurrency is at most four implementers by default, or six when the rendered role launches them outside the primary's harness, within available managed capacity. A ticket marked `complex` or reaching its third fix round uses an implementer at the strongest tier.
 
 ## Common questions
 
@@ -45,7 +47,7 @@ No. It works offline with a local markdown tracker and ends with the completed f
 
 **Its review and fix loop ran for hours, or kept "fixing" tickets that hadn't been built yet.**
 
-Both happen when `code-review` runs anywhere other than the one point the skill gives it. It compares the code against the whole spec, so it only makes sense once every ticket has landed. If it runs mid-run, every unbuilt ticket reads as a failure. The agent then builds that ticket, and that triggers another review. At the end, the skill runs `code-review` once and sends every finding to one fix subagent, but it doesn't yet say when to stop after that fix. One user reported a five-ticket feature where "the review and fix loop took roughly four hours". If you see a second broad review start, tell it to run focused checks for the fixed findings and stop. Expect that first review to find real problems. The run's output is a draft that the review completes, not something to ship on its own.
+Per-ticket review compares the ticket diff against that ticket's requirements. The whole-spec review waits until every ticket has settled, so unbuilt tickets do not look like missing work. That final review uses reviewers at the strongest tier and sends accepted findings to one implementer in a new ticket task. Verify the fixes with focused checks; repeating broad reviews can keep discovering new judgement calls. A fix round reaching three escalates the implementer to the strongest tier.
 
 **Does it drive tdd like implement does?**
 
@@ -72,6 +74,7 @@ A task checkout holds tracked files, so verification that depends on ignored fix
 - Several implementers are running at once whenever the graph allows, not one after another.
 - A ticket starts as soon as its last blocker lands on the feature branch, not when the whole run ends.
 - Every ticket's trace shows `tdd` running, with a failing test before the code.
+- Implementers report without committing; the primary commits and reviews each ticket before settlement.
 - Each ticket refreshes and completes before the feature session settles it and retires its checkout.
 - Review and retro finish on the feature branch; `main` stays unchanged until the primary session settles it.
 
