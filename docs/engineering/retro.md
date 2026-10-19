@@ -21,6 +21,7 @@ Each candidate belongs to one category, and the category decides where the fix g
 | The reviewer missed a judgement-call mistake | A rule in `CODING_STANDARDS.md` for the reviewer agent |
 | `AGENTS.md` or `CLAUDE.md` is large | Move its steering out, into standards or checks |
 | A tool call was expensive for what it returned | Streamline the tool, or replace it |
+| The role snapshot has stale harness versions, resolved models or date, or is missing | Tell the operator to re-render the roles at user scope |
 | A steering file is full of lines that change nothing | Delete the **no-ops** |
 | The agent needed information it couldn't reach | Widen its access: tee the dev server log to a file, give read-only access to a service |
 
@@ -65,6 +66,7 @@ The input is different. [improve-codebase-architecture](https://aihero.dev/skill
 
 ## It's working if
 
+- The report says whether the role snapshot is current and asks for a re-render when it is stale or missing.
 - Feature completion follows the retrospective, with at least one new deterministic check verified and committed on the feature branch so it lands with the feature.
 - Every candidate points back to a specific moment in the session, not a generic best practice.
 - Repeat mistakes turn into failing checks, and your `AGENTS.md` gets shorter over time, not longer.

@@ -14,6 +14,8 @@ For deciding where an interface should go, use [codebase-design](https://aihero.
 
 Run it in the repository you want to configure, with its language toolchain available. It writes lint configuration, check wiring, a small example where needed, and a README beside the packages. Existing configuration is merged.
 
+The navigation pointer goes in `AGENTS.md`, or `CLAUDE.md` when that is the only agent instructions file; setup creates `AGENTS.md` only when neither exists.
+
 ## Deep modules and a sans-I/O core
 
 A deep module hides substantial behaviour behind a small public interface. The core takes values and returns values; the shell gathers input and performs effects. A passing lint catches specific dependency mistakes, while review still needs to catch hidden effects and mutable state.
