@@ -29,11 +29,11 @@ Everything lands on one branch. Each implementer:
 2. always calls [tdd](https://aihero.dev/skills-tdd) at the seams in its ticket's Seams section, red-green one slice at a time,
 3. reports the changes and verification results without committing. It writes only in its assigned ticket checkout.
 
-The primary takes over after the implementer reports, commits verified changes through git-workflow, and runs code-review against that ticket's base and spec. It applies accepted fixes itself or through the implementer, one writer at a time, then verifies and commits them. The primary refreshes and completes the ticket before settling it from the feature checkout under the feature run. Settlement integrates each ticket and retires its checkout. The feature refreshes after each settlement and before review. After the last ticket, reviewers at the strongest tier review the whole feature. Review fixes land through the same route, then retro presents candidates. This session makes and commits every change you accept in the feature checkout, then refreshes, verifies and completes the feature. The final output gives the primary session its settlement commands. Publishing is a separate operator request.
+This session takes over after the implementer reports, commits verified changes through git-workflow, and runs code-review against that ticket's base and spec. It applies accepted fixes itself or through the implementer, one writer at a time, then verifies and commits them. This session refreshes and completes the ticket before settling it from the feature checkout under the feature run. Settlement integrates each ticket and retires its checkout. The feature refreshes after each settlement and before review. After the last ticket, reviewers at the strongest tier review the whole feature. Review fixes land through the same route, then retro adds and commits its own deterministic check on the feature branch. This session makes and commits any further changes you accept in the feature checkout, then refreshes, verifies and completes the feature. The final output gives the primary session its settlement commands. Publishing is a separate operator request.
 
 Implementers talk to the orchestrator through [context pointers](https://www.aihero.dev/ai-coding-dictionary/context-pointer) (the spec, the ticket, shared exploration notes, earlier commits) rather than pasted summaries. This keeps each subagent's prompt small and leaves room in the orchestrator's window for the graph.
 
-An explorer can report shared facts before implementation; the primary saves those notes in the task's temporary directory. Concurrency is at most four implementers by default, or six when the rendered role launches them outside the primary's harness, within available managed capacity. A ticket marked `complex` or reaching its third fix round uses an implementer at the strongest tier.
+An explorer can report shared facts before implementation; this session saves those notes in a directory outside the repo, accessible to implementers and reviewers. Concurrency is at most four implementers by default, or six when they run outside your session's harness, always bounded by available managed capacity. A ticket marked `complex` or reaching its third fix round uses an implementer at the strongest tier.
 
 ## Common questions
 
@@ -74,7 +74,7 @@ A task checkout holds tracked files, so verification that depends on ignored fix
 - Several implementers are running at once whenever the graph allows, not one after another.
 - A ticket starts as soon as its last blocker lands on the feature branch, not when the whole run ends.
 - Every ticket's trace shows `tdd` running, with a failing test before the code.
-- Implementers report without committing; the primary commits and reviews each ticket before settlement.
+- Implementers report without committing; this session commits and reviews each ticket before settlement.
 - Each ticket refreshes and completes before the feature session settles it and retires its checkout.
 - Review and retro finish on the feature branch; `main` stays unchanged until the primary session settles it.
 

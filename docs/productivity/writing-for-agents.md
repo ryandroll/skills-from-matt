@@ -1,6 +1,6 @@
 ## What it does
 
-`writing-for-agents` is the reference for writing agent-facing documents: a skill, an agent instructions file such as `AGENTS.md`, a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), a runtime prompt, a README, any doc an [agent](https://www.aihero.dev/ai-coding-dictionary/agent) reads. The format differs, but the writing does not. The same levers make each one predictable, so the agent follows the same *process* on every run (not necessarily to the same output).
+`writing-for-agents` is the reference for writing agent-facing documents: a skill, an `AGENTS.md` or `CLAUDE.md`, a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), a runtime prompt, a README, any doc an [agent](https://www.aihero.dev/ai-coding-dictionary/agent) reads. The format differs, but the writing does not. The same levers make each one predictable, so the agent follows the same *process* on every run (not necessarily to the same output).
 
 Its default fix is to delete, not to explain. Ask an agent to write instructions for another agent and it spends most of its words explaining what the [model](https://www.aihero.dev/ai-coding-dictionary/model) already knows. Each of those lines is a **no-op**: it costs [context](https://www.aihero.dev/ai-coding-dictionary/context) and changes no behaviour. This reference helps you find them, so it is as useful on a document you already have as on a blank file.
 
@@ -8,7 +8,7 @@ It was called `writing-great-skills` until v1.1. The new name fits what it alway
 
 ## When to reach for it
 
-Type `/writing-for-agents`, or the agent reaches for it on its own when you're creating or editing a skill, or modifying agent instructions such as `AGENTS.md`.
+Type `/writing-for-agents`, or the agent reaches for it on its own when you're creating or editing a skill, or modifying `AGENTS.md` or `CLAUDE.md`.
 
 Reach for it by hand for everything else an agent reads: your docs, specs and [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket), system and [AFK](https://www.aihero.dev/ai-coding-dictionary/afk) prompts. The test is one question: does an agent read this? It does not matter how the agent gets the document: a pointer names it, a human pastes it, or it is in the repo. To find out what a codebase contains, use [grill-with-docs](https://aihero.dev/skills-grill-with-docs). This reference controls how a document reads, not what it knows.
 
@@ -25,7 +25,7 @@ Once you think in these two loads, most authoring decisions (split or don't, inl
 
 - **[Context pointers](https://www.aihero.dev/ai-coding-dictionary/context-pointer)**: the reference held in context that names out-of-context material and encodes when to reach it. A skill description and an `AGENTS.md` line naming a doc are the same thing. The pointer's *wording*, not its target, decides how reliably the agent follows it.
 - **Information hierarchy**: the ladder from in-file step, to in-file reference, to disclosed reference behind a pointer. **[Progressive disclosure](https://www.aihero.dev/ai-coding-dictionary/progressive-disclosure)** is moving material down that ladder so the top stays easy to read.
-- **Completion criteria**: how clear and demanding each step's done-condition is, and the **legwork** that demand causes. They are the defence against **premature completion**. Hiding later steps requires a real context boundary, such as handing a task to an implementer, reviewer, researcher or explorer.
+- **Completion criteria**: how clear and demanding each step's done-condition is, and the **legwork** that demand causes. They are the defence against **premature completion**.
 - **Leading words**: a compact concept already in the model's pretraining (*tight*, *red*, *tracer bullet*) that the agent thinks with while running the document. It works in two places. In the body it guides execution, and in the pointer it triggers invocation.
 - **Pruning**: single source of truth, relevance, and the no-op test applied sentence by sentence, against **duplication**, **sediment** and **sprawl**.
 

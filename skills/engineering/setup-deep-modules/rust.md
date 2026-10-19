@@ -153,4 +153,4 @@ The planted I/O call is compiled, never executed: Clippy fails before the test c
 
 ## 7. Document
 
-Put the README beside the core and CLI crates. Explain the private modules/public exports, integration tests, crate-cycle coverage, finite I/O denylist and the umbrella pair. Follow [SKILL.md step 7](./SKILL.md#7-document-with-one-pointer-line) for the agent-instructions pointer.
+Put the README beside the core and CLI crates. Explain the private modules/public exports, integration tests, crate-cycle coverage, finite I/O denylist and the umbrella pair. Follow [SKILL.md step 7](./SKILL.md#7-document-with-one-pointer-line) for the agent-instructions pointer, including the umbrella command in that line itself.

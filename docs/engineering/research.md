@@ -2,7 +2,7 @@
 
 `research` answers a question by reading the sources that own the answer, then leaves a cited Markdown file in the repo. It works only from **[primary sources](https://www.aihero.dev/ai-coding-dictionary/primary-source)**: official docs, source code, specs, first-party APIs. It follows every claim back to the source that owns it, so it will not repeat a blog post's account of an API when the API's own docs are reachable.
 
-The researcher reports findings and never writes in a checkout. The primary files one Markdown report under `docs/research/`, following the tracker's research directory named by the project's agent instructions, with a link on each claim. You get a document you can react to, hand to another agent, or throw away, rather than an answer that is gone when the [session](https://www.aihero.dev/ai-coding-dictionary/session) ends.
+The researcher reports and does not edit. This session files one Markdown report in the tracker's research directory, as the project's agent instructions name it, with a link on each claim. You get a document you can react to, hand to another agent, or throw away, rather than an answer that is gone when the [session](https://www.aihero.dev/ai-coding-dictionary/session) ends.
 
 ## When to reach for it
 
@@ -22,19 +22,19 @@ The line between `research` and `grill-with-docs` is the **shelf life of what co
 
 ## Delegated legwork
 
-The reading runs as a **researcher** in the background. You keep working while it follows each claim to its primary source and reports back for the primary to file. Research is legwork you delegate, not thinking you outsource. You get a document to grill, plan, or design against, and you still make the decision.
+The reading runs as a **researcher** in the background. You keep working while it follows each claim to its primary source and reports back for this session to file. Research is legwork you delegate, not thinking you outsource. You get a document to grill, plan, or design against, and you still make the decision.
 
-A researcher already running this skill investigates directly and returns its findings, so the instruction to delegate belongs to the primary. The primary owns the durable file and tells you its path.
+A researcher already running this skill investigates directly and returns its findings, so the instruction to delegate belongs to this session. This session owns the durable file and tells you its path.
 
 ## Common questions
 
 **It spawned a second research agent. Is that meant to happen?**
 
-No. Earlier instructions could cause nested delegation, reported in [issue #530](https://github.com/mattpocock/skills/issues/530). This fork tells an existing researcher to investigate directly and report to the primary. The primary launches the researcher and files its findings. Check the task list: one question should produce one researcher, not a chain of duplicate tasks.
+No. Earlier instructions could cause nested delegation, reported in [issue #530](https://github.com/mattpocock/skills/issues/530). This fork tells an existing researcher to investigate directly and report to this session. This session launches the researcher and files its findings. Check the task list: one question should produce one researcher, not a chain of duplicate tasks.
 
 **Where should the file live, and should I commit it?**
 
-The primary files it under `docs/research/`, following the project's tracker instructions. The researcher does not edit or commit anything in a checkout. The file is a context pointer for a decision, not a permanent source of truth: keep the citations, link it from the ticket that needs it, and revisit stale findings before relying on them. The primary handles any commit through the project's workflow.
+The community view is mostly settled: keep ADRs, not research files. One Discord thread on this question put it most clearly: "ADRs yes. Everything else archive or delete after done. It otherwise becomes cruft of work and can poison future repo reads if you've drifted away from the spec/research." A research file records what was true on the day it was written, so a stale one is worse than none. On balance, these files don't belong in git, and there is no standard home for them. People use Obsidian, a separate knowledge repo, or the issue tracker instead. This session files the report in the tracker's research directory named by your project's agent instructions.
 
 **What counts as a "high-trust" primary source, and who decides?**
 
@@ -54,13 +54,13 @@ The skill has no stopping criterion. This shows up as two complaints that look o
 
 **`/wayfinder` created research tickets. Do I resolve those myself?**
 
-No. A charting session launches one researcher per research ticket through this skill and runs them in parallel. Each reports back without editing; the primary files the findings in the feature checkout's research directory and links them from the ticket. Research tickets are the exception to wayfinder's one-ticket-per-session rule because they are [AFK](https://www.aihero.dev/ai-coding-dictionary/afk).
+No. A charting session launches one researcher per research ticket through this skill and runs them in parallel. Each reports back without editing; this session files the findings in the feature checkout's research directory and links them from the ticket. Research tickets are the exception to wayfinder's one-ticket-per-session rule because they are [AFK](https://www.aihero.dev/ai-coding-dictionary/afk).
 
 ## It's working if
 
 - Your own session keeps going. If you are sitting watching it read, the delegation didn't happen.
 - Exactly one new background task appears. A second one with a near-identical name is the nesting bug.
-- The researcher reports without changing the checkout; the primary files one report under the tracker's research directory and tells you its path.
+- The researcher reports without changing the checkout; this session files one report under the tracker's research directory and tells you its path.
 - Every claim in it carries a link, and following two at random lands you on an official doc, a spec, or the source file itself, not on someone's write-up of it.
 - You can make the decision you were stuck on from the file alone, without going back to the sources yourself.
 

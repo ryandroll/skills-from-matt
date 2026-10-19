@@ -14,7 +14,7 @@ For deciding where an interface should go, use [codebase-design](https://aihero.
 
 Run it in the repository you want to configure, with its language toolchain available. It writes lint configuration, check wiring, a small example where needed, and a README beside the packages. Existing configuration is merged.
 
-The navigation pointer goes in `AGENTS.md`, or the harness's instructions file when that is the only one; setup creates `AGENTS.md` only when neither exists.
+The navigation pointer goes in `AGENTS.md`, or `CLAUDE.md` when that is the only agent instructions file; setup creates `AGENTS.md` only when neither exists.
 
 ## Deep modules and a sans-I/O core
 
@@ -45,7 +45,7 @@ No. Python starts with a `core/` package and Rust with a core crate, as small as
 - A test that imports private implementation fails with an architecture diagnostic.
 - An I/O import or call planted in core fails with `core-is-sans-io` in the output.
 - Removing the planted violations makes the normal check pass again.
-- New contributors find the layout and check command through one pointer in the repository's agent instructions.
+- New contributors find the umbrella command directly in one pointer line in the repository's agent instructions, with a link to the layout README, for every supported language.
 
 ## Where it fits
 

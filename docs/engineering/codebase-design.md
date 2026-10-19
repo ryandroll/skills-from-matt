@@ -43,7 +43,9 @@ The skill does *not* define depth as the ratio of implementation lines to interf
 - **The interface is the test surface.** Callers and tests cross the same seam. If you want to test *past* the interface, the module is the wrong shape.
 - **One adapter means a hypothetical seam. Two adapters means a real one.** Don't cut a seam until something varies across it. A single-adapter seam is just indirection.
 
-Two supporting files go further, and the skill reads them on demand rather than up front. [DEEPENING.md](https://github.com/mattpocock/skills/blob/main/skills/engineering/codebase-design/DEEPENING.md) classifies a candidate's dependencies into four categories (in-process, local-substitutable, remote-but-owned, true-external), because the category decides how you test the deepened module across its seam. [DESIGN-IT-TWICE.md](https://github.com/mattpocock/skills/blob/main/skills/engineering/codebase-design/DESIGN-IT-TWICE.md) launches explorer [subagents](https://www.aihero.dev/ai-coding-dictionary/subagent), as the harness permits, to produce three or more radically different interfaces for the same module. Explorers report designs without editing; the primary compares them on depth, locality and seam placement.
+Two supporting files go further, and the skill reads them on demand rather than up front. [DEEPENING.md](https://github.com/mattpocock/skills/blob/main/skills/engineering/codebase-design/DEEPENING.md) classifies a candidate's dependencies into four categories (in-process, local-substitutable, remote-but-owned, true-external), because the category decides how you test the deepened module across its seam. [DESIGN-IT-TWICE.md](https://github.com/mattpocock/skills/blob/main/skills/engineering/codebase-design/DESIGN-IT-TWICE.md) launches explorer [subagents](https://www.aihero.dev/ai-coding-dictionary/subagent) to produce three or more radically different interfaces for the same module. Explorers report designs without editing; this session compares them on depth, locality and seam placement.
+
+**Sans-I/O** (functional core / imperative shell) names the shape behind returning results and keeping in-process dependencies free of I/O. The core takes values and returns values or effects as data; the shell performs the I/O without making business decisions. `core-is-sans-io` checks the imports, while `CODING_STANDARDS.md` holds the reviewer's sans-I/O shape rules.
 
 ## Common questions
 
@@ -69,7 +71,7 @@ It does now, but for a long time it did not. v1.0 removed the inline deep-module
 
 **Does the design-it-twice pattern work outside Claude Code?**
 
-The skill now names explorers and leaves the launch mechanism to the rendered role files. It requests three or more alternative designs within the harness's available concurrency. Each explorer reports a design and leaves the checkout unchanged. The earlier tool-specific instructions caused the portability problem reported in [issue #564](https://github.com/mattpocock/skills/issues/564).
+The skill now names explorers and leaves the launch mechanism to the role files. It requests three or more alternative designs in parallel. Each explorer reports a design and leaves the checkout unchanged. The earlier tool-specific instructions caused the portability problem reported in [issue #564](https://github.com/mattpocock/skills/issues/564).
 
 **Can I add my own concepts to the glossary, such as connascence, module secrets, [progressive disclosure](https://www.aihero.dev/ai-coding-dictionary/progressive-disclosure)?**
 

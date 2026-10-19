@@ -10,7 +10,26 @@ const errors = [];
 const skills = new Map();
 const markdown = [];
 const counts = { "user-invoked": 0, "model-invoked": 0 };
-const roleNamesOnly = /\b(?:codex exec|codex|claude|opus|sonnet|haiku|gpt|gemini|cursor|spawn_agent)\b/gi;
+const promoted = new Set(["engineering", "productivity"]);
+const deniedHarnessNames = [
+  /\b(?:codex|claude|opus|sonnet|haiku|gpt|gemini|spawn_agent)\b/gi,
+  /\bCursor\b/g,
+];
+
+function isBucketReadme(file) {
+  return /^skills\/[^/]+\/README\.md$/.test(file);
+}
+
+function denyNames(file, source) {
+  for (const [index, line] of source.split(/\r?\n/).entries()) {
+    const prose = line.replace(/\b(?:CLAUDE|GEMINI)\.md\b|\.(?:claude|codex)\/[^\s`"'<>]*/g, "");
+    for (const pattern of deniedHarnessNames) {
+      for (const match of prose.matchAll(pattern)) {
+        errors.push(`${file}:${index + 1}: name a role or the harness instead of "${match[0]}"`);
+      }
+    }
+  }
+}
 
 function walk(directory) {
   return readdirSync(directory, { withFileTypes: true })
@@ -58,12 +77,8 @@ for (const bucket of readdirSync(skillsRoot, { withFileTypes: true })) {
     const file = relative(repo, path).split(sep).join("/");
     const source = readFileSync(path, "utf8");
     markdown.push({ file, source });
-    if (["engineering", "productivity"].includes(bucket.name) && dirname(path) !== join(skillsRoot, bucket.name)) {
-      for (const [index, line] of source.split(/\r?\n/).entries()) {
-        for (const match of line.matchAll(roleNamesOnly)) {
-          errors.push(`${file}:${index + 1}: name a role or the harness instead of "${match[0]}"`);
-        }
-      }
+    if (promoted.has(bucket.name) && !isBucketReadme(file)) {
+      denyNames(file, source);
     }
     if (!path.endsWith(`${sep}SKILL.md`)) continue;
     const directoryName = basename(dirname(path));
@@ -93,7 +108,7 @@ for (const bucket of readdirSync(skillsRoot, { withFileTypes: true })) {
       }
       if (skills.has(skillName)) throw new Error(`${file}: duplicate skill name ${skillName}`);
       skills.set(skillName, { userInvoked });
-      if (["engineering", "productivity"].includes(bucket.name)) {
+      if (promoted.has(bucket.name)) {
         counts[userInvoked ? "user-invoked" : "model-invoked"]++;
       }
     } catch (error) {

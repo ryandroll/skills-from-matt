@@ -2,7 +2,7 @@
 
 `retro` looks back over a coding [session](https://www.aihero.dev/ai-coding-dictionary/session) and suggests improvements to the agent's **[environment](https://www.aihero.dev/ai-coding-dictionary/environment)**, so the next run goes better. It reads the session's own record (the current one by default, or one you point it at in the session logs). It finds the moments where the agent struggled, and gives you a list of candidate fixes, most severe first.
 
-It changes the environment, not the code. Take the bug the agent shipped, the file it needed twenty [tool calls](https://www.aihero.dev/ai-coding-dictionary/tool-call) to find, or the rule the reviewer missed. `retro` does not fix any of them directly. It asks what in the repo let them happen, and proposes the check, pointer, or standard that prevents them next time. It also only proposes. Nothing changes until you pick a candidate.
+It improves the environment that shapes the next run. Take the bug the agent shipped, the file it needed twenty [tool calls](https://www.aihero.dev/ai-coding-dictionary/tool-call) to find, or the rule the reviewer missed. `retro` asks what in the repo let them happen. Before the feature settles, it adds at least one deterministic check directly on the feature branch, verifies it through the umbrella check or as a plain test when no umbrella check exists, and commits it through the commit route without separate approval. Pointers, judgement-call standards and other improvements remain candidates for you to choose.
 
 ## When to reach for it
 
@@ -33,7 +33,12 @@ Before `retro` proposes any rule, it classifies the violation. A **mechanical** 
 
 **Does it write the lint rule itself, or wait for a yes? Can I wire it to run after every session?**
 
-`retro` presents candidates and writes nothing itself. At feature close-out, `implement-spec` makes every change you accept in the feature checkout and commits it through git-workflow, then refreshes and completes the feature task. This is deliberate. One user asked for exactly this after being "burned by auto-hooks that blocked good changes." It takes judgement to decide what deserves a permanent check, so the skill stays [human-in-the-loop](https://www.aihero.dev/ai-coding-dictionary/human-in-the-loop) while allowing automatic invocation. Some users do run it after every implementation run. But a smooth session has little to teach, so a run after every session mostly produces rules nobody needed. There is no dry-run mode. A proposed check is code like any other, so try it against the repo before you let it block merges.
+At feature close-out, `retro` writes at least one deterministic check from the session's findings without waiting for a separate yes. It wires the check into the umbrella check, finds the command through the project's agent instructions, and verifies and commits it through git-workflow on the feature branch. The check lands with the feature. There is no dry-run mode; try a proposed check against the repo before it blocks. Other candidates still wait for your choice. `implement-spec` always runs this step before completing the feature; you can also invoke it after another session worth learning from.
+
+| Situation | Required check |
+| --- | --- |
+| No umbrella check exists | Report that [setup-deep-modules](https://aihero.dev/skills-setup-deep-modules) is needed, and add and run the check as a plain test. |
+| The session surfaced no mechanical mistake | Add a test at a seam the tickets missed. |
 
 **Won't this pile up lint rules forever? Does it ever suggest removing one?**
 
@@ -62,7 +67,7 @@ The input is different. [improve-codebase-architecture](https://aihero.dev/skill
 ## It's working if
 
 - The report says whether the role snapshot is current and asks for a re-render when it is stale or missing.
-- Feature completion follows the retrospective, with any accepted changes kept on the feature branch.
+- Feature completion follows the retrospective, with at least one new deterministic check verified and committed on the feature branch so it lands with the feature.
 - Every candidate points back to a specific moment in the session, not a generic best practice.
 - Repeat mistakes turn into failing checks, and your `AGENTS.md` gets shorter over time, not longer.
 - If a check already existed but was not connected, the finding is to connect it, not a proposal to build a new one.
@@ -76,7 +81,7 @@ The input is different. [improve-codebase-architecture](https://aihero.dev/skill
 grill-with-docs → to-spec → implement → code-review → retro
 ```
 
-Run it after a build worth learning from, in the same session or pointed at that session's log. Feature close-out always includes it, even when the conclusion is that no environment change is needed.
+Run it after a build worth learning from, in the same session or pointed at that session's log. Feature close-out always includes it and the deterministic check it adds.
 
 - [code-review](https://aihero.dev/skills-code-review) is the reviewer agent that `retro` most often tunes. New coding standards go where its Standards axis reads them.
 - [writing-for-agents](https://aihero.dev/skills-writing-for-agents) sets the writing style for every steering file and skill that `retro` proposes, and `retro` loads it before it starts.

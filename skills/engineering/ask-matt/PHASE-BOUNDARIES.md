@@ -11,7 +11,7 @@ The **phase boundary** is the gap between two phases, and it is the only place t
 | **Continue** | Stay in the session. No context switch at all.                    |
 | **`/clear`** | Empty the context window and start from nothing.                  |
 | **`/handoff`** | Write a portable markdown file and seed a session anywhere with it. |
-| **Implementer, reviewer, researcher or explorer** | Send the task to its matching role and get a report back. |
+| **Subagent** (an implementer, reviewer, researcher or explorer) | Send the task to its matching role and get a report back. |
 | **`/compact`** | Compress this context and seed a fresh session with the summary.  |
 
 ## The tree
@@ -33,7 +33,7 @@ The cost of getting this wrong is one-way. Clear a *relevant* context and you lo
 
 That list is the whole clause. What `/handoff` buys is **portability**: a file that travels. If nothing is travelling, you don't need it.
 
-**4. Can the task be done AFK?** Is it scoped tightly enough to run with you away from the keyboard, no steering? Then send it to an **implementer**, **reviewer**, **researcher** or **explorer**, depending on the task and leave this session untouched. Automated review is the standard case: the reviewer reads the diff and reports without editing, and you aren't needed while it does.
+**4. Can the task be done AFK?** Is it scoped tightly enough to run with you away from the keyboard, no steering? Then send it to a subagent role and leave this session untouched. Automated review is the standard case: the reviewer reads the diff and reports without editing, and you aren't needed while it does.
 
 **5. Otherwise, `/compact`.** Relevant context, same harness, same directory, and you need to stay in the loop: this is where the tree lands, and it lands here often. Pass it an instruction (`/compact we're going to QA this area`) so the summary keeps what the next phase needs.
 

@@ -4,7 +4,7 @@
 
 The skill never merges or re-ranks the two axes. The report ends with a worst issue *per axis* and declines to name a single winner across them. A change can pass one axis and fail the other. Code that follows every convention but implements the wrong thing passes Standards and fails Spec. Code that does exactly what the [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket) asked but breaks the repo's conventions does the reverse. A blended verdict lets the passing axis hide the failing one.
 
-Reviewers report findings and do not edit. The primary applies accepted fixes itself or through an implementer, one writer per checkout. Per-ticket axes use the default reviewer tier; the whole-branch review before the feature settles uses the strongest tier.
+Reviewers report findings and do not edit. This session applies accepted fixes itself or through an implementer, one writer per checkout. Per-ticket axes use the default reviewer tier; the whole-branch review before the feature settles uses the strongest tier.
 
 ## When to reach for it
 
@@ -33,6 +33,8 @@ The Spec axis needs a spec to exist and be findable. It looks in this order:
 4. Asking you.
 
 Step 1 depends on the tracker doc, which [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) writes. Without it the axis still works if you hand it a path. With no spec at all, the skill skips the Spec sub-agent and the report says "no spec available" rather than inventing requirements.
+
+Before either reviewer starts, the skill runs the umbrella check in the checkout under review, using the command in the project's agent instructions after validating the fixed point and non-empty diff. A failure returns the work to the implementer with the failing output; no reviewer starts while it is red.
 
 ## The two axes
 
@@ -85,7 +87,8 @@ No. It reviews the committed diff from the fixed point's merge-base to HEAD. `im
 ## It's working if
 
 - It refuses to start on a bad ref or an empty diff, before any sub-agent is spawned.
-- Reviewers leave the checkout unchanged and return findings to the primary.
+- A red umbrella check returns the failing output to the implementer without launching either reviewer.
+- Reviewers leave the checkout unchanged and return findings to this session.
 - The report arrives as two separate blocks under `## Standards` and `## Spec`, not one merged list.
 - Every Standards finding names either a rule in one of your repo's files or one of the twelve smells, with the hunk quoted; every Spec finding quotes a line of the spec.
 - The closing summary gives a worst issue per axis and declines to pick an overall winner.
@@ -96,7 +99,7 @@ No. It reviews the committed diff from the fixed point's merge-base to HEAD. `im
 `code-review` is the review step near the tail of the build chain: `grill-with-docs → to-spec → implement → code-review → retro`. It also stands alone on any branch or PR you point it at.
 
 - [implement](https://aihero.dev/skills-implement) is the closest neighbour. It drives the build and calls this skill as its own closing review after committing verified work. [implement-spec](https://aihero.dev/skills-implement-spec) reviews each ticket against its own requirements, then the whole feature branch at the strongest tier.
-- [retro](https://aihero.dev/skills-retro) comes after it and tunes it. When a session shows the review missing a class of mistake, `retro` proposes the check or the `CODING_STANDARDS.md` rule the Standards axis then reads.
+- [retro](https://aihero.dev/skills-retro) comes after it and tunes it. Before the feature settles, `retro` adds a deterministic check on the feature branch; judgement calls become proposed `CODING_STANDARDS.md` rules the Standards axis then reads.
 - [to-spec](https://aihero.dev/skills-to-spec) produces the document the Spec axis checks against, so a vague spec makes that axis vague.
 - [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture) is the whole-codebase counterpart, because this skill only looks at one diff.
 

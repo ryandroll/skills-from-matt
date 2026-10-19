@@ -94,6 +94,8 @@ Good interfaces make testing natural:
 
 3. **Small surface area.** Fewer methods = fewer tests needed. Fewer params = simpler test setup.
 
+**Sans-I/O** (functional core / imperative shell) is the shape that "return results, don't produce side effects" and the in-process dependency category add up to. The core takes values and returns values or effects as data; the shell does the I/O and makes no business decision. The lint rule `core-is-sans-io` enforces the import side; `CODING_STANDARDS.md` holds the reviewer's sans-I/O shape rules.
+
 ## Relationships
 
 - A **Module** has exactly one **Interface** (the surface it presents to callers and tests).

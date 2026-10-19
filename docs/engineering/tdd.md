@@ -49,7 +49,7 @@ Mocks are for system boundaries only: external APIs, time, randomness, sometimes
 
 ## Verification and commits
 
-The red-green loop runs in the checked task checkout. Focused tests establish each slice, typechecks run regularly, and the full suite finishes the work. Verified changes use git-workflow's `commit-input` then `commit` route, with literal file paths and the same run identity. Verification and commit results are reported separately.
+The red-green loop runs in the checked task checkout. Focused tests establish each slice, typechecks run regularly, and the umbrella check finishes the work, using the command found through the project's agent instructions. Verified changes use git-workflow's `commit-input` then `commit` route, with literal file paths and the same run identity. Verification and commit results are reported separately.
 
 ## Common questions
 

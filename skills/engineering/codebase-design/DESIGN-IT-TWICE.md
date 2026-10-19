@@ -18,7 +18,7 @@ Show this to the user, then immediately proceed to Step 2. The user reads and th
 
 ### 2. Launch explorers
 
-Launch three or more explorers in parallel, as the harness permits. Explorers report their designs and do not edit. Each must produce a **radically different** interface for the deepened module.
+Launch 3+ explorers in parallel. Each explorer reports and does not edit. Each must produce a **radically different** interface for the deepened module.
 
 Prompt each explorer with a separate technical brief (file paths, coupling details, dependency category from [DEEPENING.md](DEEPENING.md), what sits behind the seam). The brief is independent of the user-facing problem-space explanation in Step 1. Give each explorer a different design constraint:
 

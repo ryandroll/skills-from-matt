@@ -48,6 +48,6 @@ When the shape of that interface is itself in question (how deep the module is, 
 
 ## Verify and commit
 
-Use the project's focused verification command to observe red, then green, for each slice; typecheck regularly and finish with the full suite. Keep this work in the checked task checkout. A failed check stays visible and blocks completion.
+Use the project's focused verification command to observe red, then green, for each slice; typecheck regularly and finish with the umbrella check, following the project's agent instructions for the command. Keep this work in the checked task checkout. A failed check stays visible and blocks completion.
 
 Commit each verified change through git-workflow's `commit-input` then `commit` with literal `--path`s and a freshly inspected `--expected-head`; report verification and commit separately.

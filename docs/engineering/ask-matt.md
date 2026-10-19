@@ -45,7 +45,7 @@ The skill's leading word is **flow**, a path *through* the skills rather than a 
 | A prototype | Its own task ends with a retained branch and retired worktree. |
 | Moving sessions | `handoff` carries the feature identity, checkout and run tokens. |
 
-The skills drive these transitions; publication requires a separate request. Implementers write only in their ticket checkouts and report without committing. The primary commits and reviews each ticket; reviewers at the strongest tier review the whole feature before settlement. Researchers report for the primary to file under `docs/research/`, explorers report facts or designs without editing, and retro checks whether the rendered role snapshot is still current.
+Before the feature settles, `retro` adds and commits at least one deterministic check on the feature branch without separate approval. The skills drive these transitions; publication requires a separate request. Implementers write only in their ticket checkouts and report without committing. This session commits and reviews each ticket; reviewers at the strongest tier review the whole feature before settlement. Researchers report for this session to file in the tracker's research directory, explorers report facts or designs without editing, and retro checks whether the role snapshot is still current.
 
 ## The phase boundary
 
@@ -56,7 +56,7 @@ The skill's other key idea is the **phase boundary**. A phase is a chunk of work
 | **Continue** | The next phase wants this one verbatim, or you have [smart zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone) left. It is the only move that keeps the session as a [primary source](https://www.aihero.dev/ai-coding-dictionary/primary-source), so rule it out first |
 | **`/clear`** | Everything behind you is disposable. The cheapest option, and you cannot undo it if you were wrong |
 | **[handoff](https://aihero.dev/skills-handoff)** | Something has to travel: a new [harness](https://www.aihero.dev/ai-coding-dictionary/harness), a new directory, a colleague, a side task forked mid-phase |
-| **Implementer, reviewer, researcher or explorer** | The task is scoped tightly enough to run with you [away from the keyboard](https://www.aihero.dev/ai-coding-dictionary/afk) |
+| **Subagent** (an implementer, reviewer, researcher or explorer) | The task is scoped tightly enough to run with you [away from the keyboard](https://www.aihero.dev/ai-coding-dictionary/afk) |
 | **`/compact`** | None of the above. It is the default, and the tree often ends here |
 
 People often get two of these wrong, which is why the router gives the order and not only the list. `/handoff` looks like the general way to move between context windows, but it is not. All it gives you is portability. `/compact` is the last option in the tree, not the first, because each of the four options above it is cheaper or more precise.

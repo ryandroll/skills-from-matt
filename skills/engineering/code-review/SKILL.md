@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews with parallel reviewers and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\"."
+description: "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews in parallel and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\"."
 ---
 
 Two-axis review of the diff between `HEAD` and a fixed point the user supplies or the task records:
@@ -21,6 +21,8 @@ Call the Skill tool with "git-workflow". Use the user's explicit fixed point whe
 Capture the diff command once: `git diff <fixed-point>...HEAD` (three-dot, so the comparison is against the merge-base). Also note the list of commits via `git log <fixed-point>..HEAD --oneline`.
 
 Before going further, confirm the fixed point resolves (`git rev-parse <fixed-point>`) and the diff is non-empty. A bad ref or empty diff should fail here, not inside two parallel reviewers.
+
+Run the umbrella check in the checkout under review, following the project's agent instructions for the command. If it fails, return the work to the implementer with the failing output and launch no reviewer.
 
 ### 2. Identify the spec source
 
@@ -55,9 +57,9 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 - **Middle Man**: a class or function that mostly just delegates onward. → cut it, call the real target direct.
 - **Refused Bequest**: a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
 
-### 4. Launch both reviewers in parallel
+### 4. Launch both reviewers in parallel, in the foreground
 
-Launch one reviewer per axis together, in the foreground, and aggregate their reports. Reviewers report findings and do not edit. Use the strongest tier for the whole-branch review before the feature settles; per-ticket axes use the default reviewer tier. The primary applies accepted fixes itself or through an implementer, with one writer per checkout.
+Launch one reviewer per axis together, in the foreground, and aggregate their reports. Reviewers report findings and do not edit. The whole-branch review before the feature settles uses the strongest tier.
 
 **Standards reviewer prompt** should include:
 
