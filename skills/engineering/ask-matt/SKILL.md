@@ -57,7 +57,7 @@ Not feature work, just upkeep.
 
 - **`/setup-deep-modules`**: run once per repository to enforce deep modules and sans-I/O cores in TypeScript, Python, and Rust, wired into the normal check command.
 
-- **`/improve-codebase-architecture`** runs whenever you have a spare moment to keep the codebase good for agents to operate in. It surfaces **deepening opportunities**; picking one _generates an idea_ you can take into the main flow at `/grill-with-docs`. It's the survey that finds the candidates; **`/codebase-design`** (below) is the bench you design the chosen one on.
+- **`/improve-codebase-architecture`** runs whenever you have a spare moment to keep the codebase good for agents to operate in. It surfaces **deepening opportunities**, grills through the one you pick, and calls `/to-spec` when the design is settled and you confirm. It's the survey that finds the candidates; **`/codebase-design`** (below) is the bench you design the chosen one on.
 
 ## Vocabulary underneath
 
@@ -87,8 +87,8 @@ Off the main flow entirely.
 - **`/research`**: delegate reading legwork to a **researcher**: it investigates a question against **primary sources**, then reports without editing, and this session files the findings in the feature checkout's research directory. Keep working while it reads. The filed report is something to take *into* the main flow at `/grill-with-docs`, since research feeds the thinking rather than replacing it.
 - **`/to-questionnaire`** comes in when the thing blocking you isn't in your head or the codebase but in **someone else's**, and it writes them a questionnaire to fill in. It's the inverse of the grilling interview: instead of interviewing you about the subject, it interviews you about the **send** (who it's going to, what you need back) and aims the questions at the gap. What comes back is material for `/grill-with-docs` or `/to-spec`.
 - **`/wizard`** is for the steps only a **human** can take: provisioning infrastructure, setting up credentials or CI secrets, clicking through an unfamiliar third-party dashboard, running a one-off migration or cutover. It generates an interactive bash script that opens each URL, captures each value, and writes it into `.env` and GitHub secrets, so the procedure stops being something you re-explain to an agent every time. Model-invoked, so the agent reaches for it the moment it hits a wall only you can pass. If the agent could just do it itself, it should; this is for where a human is genuinely in the loop.
-- **`/wait-what`** is the corrective for a message that didn't land. Use it mid-conversation, inside any other skill, and the agent re-pitches what it just said with the context you were missing, in plain English, using the `GLOSSARY.md` vocabulary. It works after the fact; `/grill-with-docs` is the upfront cure, because a shared language agreed early is what stops the jargon arriving at all.
-- **`/teach`**: learn a concept over multiple sessions, using the current directory as a stateful workspace.
+- **`/wait-what`** is the corrective for a message that didn't land. Use it mid-conversation, inside any other skill, and the agent re-pitches what it just said with the context you were missing, in the language you are writing in, using plain words and the `GLOSSARY.md` vocabulary. It works after the fact; `/grill-with-docs` is the upfront cure, because a shared language agreed early is what stops the jargon arriving at all.
+- **`/teach`**: learn a concept over multiple sessions, using a dedicated directory outside project repositories as a stateful workspace.
 - **`/writing-for-agents`** is the reference for writing documents agents consume: skills, AGENTS.md, pointed-at docs.
 
 ## Task shape and stage checks
@@ -97,7 +97,7 @@ Read the project's agent instructions, especially the **Issue tracker** section 
 
 | Situation | Route and Git stage |
 | --- | --- |
-| First feature write in `/grill-with-docs`, `/wayfinder`, or `/to-spec` from a plain conversation | The skill starts one feature task from the primary checkout, binds its run and continues there. Glossary, decisions, spec, tickets, code, review fixes and retro share that branch. |
+| First feature write in `/grill-with-docs`, `/wayfinder`, `/improve-codebase-architecture` (durable files only), or `/to-spec` from a plain conversation | The skill starts one feature task from the primary checkout, binds its run and continues there. Glossary, decisions, spec, tickets, code, review fixes and retro share that branch. |
 | Small change, unrelated fix during a feature, or bug fix after `/diagnosing-bugs` | `/implement` in its own task targeting `main`. Its step 1 checks the checkout, open task and bound run before writing. |
 | Feature with tickets | `/implement-spec` in the feature checkout checks the open feature, bound run and spare capacity. It starts each ticket with `task-start --base-ref <feature-branch>` and checks that base and integration target before launching its implementer. |
 

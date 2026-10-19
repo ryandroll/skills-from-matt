@@ -1,6 +1,6 @@
 ## What it does
 
-`teach` turns the directory you run it in into a standing teaching workspace and teaches you one topic across many [sessions](https://www.aihero.dev/ai-coding-dictionary/session), in short self-contained HTML lessons.
+`teach` uses a dedicated directory outside project repositories as a standing teaching workspace and teaches you one topic across many [sessions](https://www.aihero.dev/ai-coding-dictionary/session), in short self-contained HTML lessons.
 
 It does not teach from what the [model](https://www.aihero.dev/ai-coding-dictionary/model) already knows. It treats [parametric knowledge](https://www.aihero.dev/ai-coding-dictionary/parametric-knowledge) as untrusted. Before it teaches, it finds high-trust resources, records them in `RESOURCES.md`, and cites them inside every lesson. It is also [stateful](https://www.aihero.dev/ai-coding-dictionary/stateful). The mission, the resources, the lessons and the record of what you have learned all live as files in the directory, so the next session continues from those files, not from what is left of the last conversation.
 
@@ -21,7 +21,7 @@ Reach for it when the learning is the project: a language, a framework, a codeba
 
 ## Prerequisites
 
-`teach` builds a directory rather than producing a file, and the skill assumes one mission per workspace, so run it somewhere you are happy to give over to a single topic. Keep it out of the project you are working in. A separate repo is the best home, better than a global `~/.learnings/` folder or the working project itself. A dedicated repo also lets you commit the lessons, which is how teams have shared them.
+`teach` builds a directory rather than producing a file, with one mission per workspace. Use a dedicated directory outside project repositories. If the current directory is inside a Git repository, it asks you whether it is a dedicated teaching repository. If it is not, it stops, proposes a dedicated directory outside the repository, and asks before creating anything. Workspace paths resolve from the workspace directory, which may be the new directory you picked.
 
 What accumulates in that directory:
 
@@ -35,7 +35,7 @@ What accumulates in that directory:
 | `assets/*` | Reusable components, starting with a shared stylesheet, so the lessons look like one course |
 | `NOTES.md` | Your stated teaching preferences |
 
-Two notes on that list. A glossary suits most topics, but the skill ships a `GLOSSARY-FORMAT.md` that `SKILL.md` no longer links to, so you only get one if you ask ([issue #559](https://github.com/mattpocock/skills/issues/559)). All of it lands in the directory you ran `/teach` in.
+Two notes on that list. A glossary suits most topics, but the skill ships a `GLOSSARY-FORMAT.md` that `SKILL.md` no longer links to, so you only get one if you ask ([issue #559](https://github.com/mattpocock/skills/issues/559)). All of it lands in the dedicated teaching workspace.
 
 ## Storage strength, not fluency
 
@@ -56,7 +56,7 @@ Lessons are built from **components** in `assets/`: stylesheets, quiz widgets, s
 ## Common questions
 
 **Where does it put the files? Mine ended up in `~/.claude/skills`.**
-In the directory you ran `/teach` in ([#377](https://github.com/mattpocock/skills/issues/377)).
+In the dedicated teaching workspace ([#377](https://github.com/mattpocock/skills/issues/377)). If you invoke it inside a project repository, it asks you to choose a directory outside the repository before creating anything.
 
 **Do I stay in one session, or start a new one per lesson?**
 All three approaches work: staying in the same session, re-invoking `/teach` in a new session, or opening a new session in the same folder. Each lesson is its own invocation. The course state lives in the folder, not in the conversation. Common practice is to open a fresh session in the workspace and say `/teach next lesson for <topic>`.
@@ -81,7 +81,8 @@ There is no canonical answer, and the reported differences are large. Users repo
 
 ## It's working if
 
-- The first thing it does in an empty directory is interview you about why you want this, rather than produce a lesson.
+- Inside a Git repository, it asks whether this is a dedicated teaching repository. If it is not, it stops, proposes a dedicated directory outside the repository, and asks before creating anything.
+- Teaching files appear in the workspace directory you picked. In an empty teaching workspace, it interviews you about why you want this before producing a lesson.
 - `RESOURCES.md` fills up before the lessons do, and each lesson names one primary source worth reading yourself.
 - Claims in a lesson carry links out. A lesson with no citations is the skill teaching from memory.
 - A lesson takes one sitting and leaves you able to do one thing you couldn't before.
