@@ -16,7 +16,7 @@ The issue tracker should have been provided to you. If not, tell the user to run
 
 ### 1. Pin the fixed point
 
-Call the Skill tool with "git-workflow". Use the user's explicit fixed point when supplied. Otherwise run `workspace-report --repo <checkout>` and select the matching checkout's task receipt via `repository.worktrees[].active_receipt.provenance`. Read it with `git show <receipt-ref>` and use `checkpoint.object`, the committed base recorded by `task-start` (`checkpoint.capture_status` is `source-untouched`). Only when the receipt has no base, use `repository.run.head` from `run-report --repo <checkout> --task-id <task> --task-id-source <issuer> --session-id <session>`. A rebound session can move that run head. If neither receipt supplies a starting commit and no explicit fixed point is available, ask for one; this read-only review does not require an open task or a stage check.
+Call the Skill tool with "git-workflow" and use the user's explicit fixed point, or the task base printed by `git-workflow status` when none is supplied; if neither is available, ask for one.
 
 Capture the diff command once: `git diff <fixed-point>...HEAD` (three-dot, so the comparison is against the merge-base). Also note the list of commits via `git log <fixed-point>..HEAD --oneline`.
 

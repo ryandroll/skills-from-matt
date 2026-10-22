@@ -82,7 +82,7 @@ Each fix adds new code to review, and the judgement-call half of the Standards a
 
 **Does it review my uncommitted work?**
 
-No. It reviews the committed diff from the fixed point's merge-base to HEAD. `implement` commits verified work through git-workflow before this review, then records fixes through the same route. Uncommitted changes still need a commit before they enter this comparison.
+No. It reviews the committed diff from the fixed point's merge-base to HEAD. `implement` commits verified work with native Git before this review, then records fixes the same way. Uncommitted changes still need a commit before they enter this comparison.
 
 ## It's working if
 

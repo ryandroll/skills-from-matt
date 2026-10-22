@@ -11,10 +11,7 @@ When exploring the codebase, read `GLOSSARY.md` (if it exists) so test names and
 
 ## 1. Check the Git stage
 
-Call the Skill tool with "git-workflow".
-Before touching a file run the read-only `workspace-report --repo <checkout>` then `run-report --repo <checkout> --task-id <task> --task-id-source <issuer> --session-id <session>`.
-Verify a skill-owned checkout, an open task and a run bound to this checkout.
-On failure stop and print the next command the report names, filled with the inspected values: outside a task `task-start --repo <primary> --task-id <task-slug> --task-id-source <issuer> --session-id <session> --confirm-authorized`; unbound `run-start --repo <checkout> --task-id <task> --task-id-source <issuer> --session-id <session> --expected-head <inspected-head> --confirm-authorized`.
+Before touching a file, call the Skill tool with "git-workflow", run `git-workflow status`, and stop with its `git-workflow start` command if this is not a task checkout, or not the one you were given.
 
 ## What a good test is
 
@@ -50,4 +47,6 @@ When the shape of that interface is itself in question (how deep the module is, 
 
 Use the project's focused verification command to observe red, then green, for each slice; typecheck regularly and finish with the umbrella check, following the project's agent instructions for the command. Keep this work in the checked task checkout. A failed check stays visible and blocks completion.
 
-Commit each verified change through git-workflow's `commit-input` then `commit` with literal `--path`s and a freshly inspected `--expected-head`; report verification and commit separately.
+If this session will commit in a task it did not start, run `git-workflow takeover` first.
+
+Commit each verified change with native `git add <paths>` and `git commit`, listing paths one by one, never `-A` or `.`; report verification and commit separately.

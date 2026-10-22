@@ -14,7 +14,9 @@ You will also arrive here without choosing to. [wayfinder](https://aihero.dev/sk
 
 ## Prerequisites
 
-Git-workflow must be available. The skill opens its own prototype task from the primary checkout, using a separate lifecycle run if the session is already bound to a feature, then checks its skill-owned checkout, open task and bound run before touching a file. A failed check stops with the exact next command.
+A session that will commit in a task it did not start runs `git-workflow takeover` first.
+
+Git-workflow must be available. The skill uses `git-workflow start` for its own prototype task, then `git-workflow status` checks that the checkout is a task matching the assignment before touching a file. A failed check stops with the start command.
 
 ## Two branches
 
@@ -31,7 +33,7 @@ A finished prototype leaves two things, and they go to different places.
 
 You record the **answer** (the verdict plus the question it settled) somewhere permanent: a commit message, an ADR, the implementation issue. The feature session later carries the answer into real code; the prototype session does not write into that checkout.
 
-The **prototype** is the runnable evidence the answer came from, and you do not delete it. It doesn't belong in main either, because nobody maintains it and it goes stale fast. The skill commits it through git-workflow on its own task branch, closes the session with that branch retained, retires the worktree, and leaves a [context pointer](https://www.aihero.dev/ai-coding-dictionary/context-pointer) to that branch on the implementation issue. Main stays clean, and whoever picks the work up next can find and re-run the prototype.
+The **prototype** is the runnable evidence the answer came from, and you do not delete it. It doesn't belong in main either, because nobody maintains it and it goes stale fast. The skill commits it with native `git add <paths>` and `git commit`, listing paths one by one, never `-A` or `.`. It ends with `git-workflow shelve`, retaining an `archive/<task>` tag and removing the checkout and branch, and leaves a [context pointer](https://www.aihero.dev/ai-coding-dictionary/context-pointer) to that tag on the implementation issue. Main stays clean, and whoever picks the work up next can find and re-run the prototype.
 
 ## Common questions
 
@@ -60,7 +62,7 @@ It can be, if you prototype questions you could have answered by talking, or let
 - Someone says "wait, that shouldn't be possible" or "huh, I assumed X". That's a bug in the *idea*, which is what the prototype is for.
 - The UI variants disagree about layout and information hierarchy, not just colour and copy, and the feedback you get is "the header from B with the sidebar from C".
 - It is answered in one sitting. If you're still building it a day later, the question was too big; split it.
-- When it is over, the prototype branch retains the demo, its worktree is retired, and the feature has a pointer to the answer. `main` is unchanged.
+- When it is over, the archive tag retains the demo, its checkout and branch are removed, and the feature has a pointer to the answer. `main` is unchanged.
 
 ## Where it fits
 

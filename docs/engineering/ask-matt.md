@@ -39,11 +39,11 @@ The skill's leading word is **flow**, a path *through* the skills rather than a 
 | Work | Route |
 | --- | --- |
 | First feature file | The first planning skill opens the feature task before writing; later planning reuses it. |
-| A feature with tickets | `implement-spec` opens each ticket from the feature branch, checks its target, and settles it into the feature itself. Review and retro precede feature completion and primary-session settlement into `main`. |
+| A feature with tickets | `implement-spec` opens each ticket from the feature branch, checks its target, and settles it into the feature itself. Review and retro precede `git-workflow complete` and the operator's approval for `git-workflow settle` into main. |
 | A small change or bug fix after diagnosis | `implement` uses one task straight to `main`. |
-| Code about to be written | `implement`, `tdd` and `prototype` check the checkout, open task and bound run; `implement-spec` also checks feature capacity and each ticket's base. Failure stops with the next command. |
-| A prototype | Its own task ends with a retained branch and retired worktree. |
-| Moving sessions | `handoff` carries the feature identity, checkout and run tokens. |
+| Code about to be written | `implement`, `tdd` and `prototype` use `git-workflow status` to check the assigned task checkout; `implement-spec` checks the feature and opens each ticket with `git-workflow start --base <feature-branch>`. Failure stops with the next command. |
+| A prototype | Its own task ends with `git-workflow shelve`, retaining an archive tag and removing its checkout and branch. |
+| Moving sessions | `handoff` carries the task id, checkout and branch, and tells the next session to run `git-workflow takeover` first. |
 
 Before the feature settles, `retro` adds and commits at least one deterministic check on the feature branch without separate approval. The skills drive these transitions; publication requires a separate request. Implementers write only in their ticket checkouts and report without committing. This session commits and reviews each ticket; reviewers at the strongest tier review the whole feature before settlement. Researchers report for this session to file in the tracker's research directory, explorers report facts or designs without editing, and retro checks whether the role snapshot is still current.
 

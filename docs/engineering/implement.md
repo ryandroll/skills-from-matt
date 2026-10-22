@@ -1,6 +1,6 @@
 ## What it does
 
-`implement` builds work that has already been decided. You point it at a [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket), a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), or the plan you just agreed in the conversation, and it writes the code, drives [tdd](https://aihero.dev/skills-tdd) at the seams, typechecks as it goes, runs [code-review](https://aihero.dev/skills-code-review) at the end, and commits through git-workflow in the task checkout.
+`implement` builds work that has already been decided. You point it at a [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket), a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), or the plan you just agreed in the conversation, and it writes the code, drives [tdd](https://aihero.dev/skills-tdd) at the seams, typechecks as it goes, runs [code-review](https://aihero.dev/skills-code-review) at the end, and commits with native Git in the task checkout.
 
 It never reopens the plan. There is no interview, no clarifying round, no proposal of a different approach. Whatever was settled upstream is the input, and the skill's whole job is to turn that into a commit. That is what separates it from typing "build this" at a fresh [agent](https://www.aihero.dev/ai-coding-dictionary/agent), which often redesigns the work while it builds it.
 
@@ -24,7 +24,9 @@ The same-session case is worth naming because the skill's own first line doesn't
 
 ## Prerequisites
 
-Git-workflow must have an open task in a skill-owned checkout with a bound run. The first step checks that state without writing. Outside a task, it stops and prints the exact task-start command. A small standalone change targets `main`; an existing ticket task keeps its feature target.
+A session that will commit in a task it did not start runs `git-workflow takeover` first.
+
+`git-workflow status` must identify a task checkout matching the assignment before writing; otherwise the first step stops with the `git-workflow start` command. A small standalone change targets `main`; an existing ticket task keeps its feature target.
 
 If the tickets came from [to-spec](https://aihero.dev/skills-to-spec), [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) configured the tracker they live on. `code-review` reads the same configuration to find the originating spec at close-out.
 
@@ -36,10 +38,10 @@ The run keeps implementation and its evidence in one task:
 2. Always drive [tdd](https://aihero.dev/skills-tdd) at the seams the ticket or spec names, one red-green slice at a time.
 3. Typecheck often, run single test files as it goes.
 4. Run the umbrella check at the end, using the command found through the project's agent instructions.
-5. Commit verified work through git-workflow, run [code-review](https://aihero.dev/skills-code-review), and verify and commit any fixes.
-6. Refresh from the integration target and complete the task. A ticket returns to its feature session for settlement; a standalone change prints the settlement route for the primary session.
+5. Commit verified work with native `git add <paths>` and `git commit`, listing paths one by one, never `-A` or `.`, run [code-review](https://aihero.dev/skills-code-review), and verify and commit any fixes.
+6. Run `git-workflow refresh`, verify, and use `git-workflow complete` after verification passes. A ticket returns to its feature session for settlement; a standalone change asks the operator before `git-workflow settle` into main.
 
-One run covers one task. [implement-spec](https://aihero.dev/skills-implement-spec) owns the graph when several tickets belong to one feature. Each ticket has a separate checkout and run, while the feature branch holds their combined result.
+One run covers one task. [implement-spec](https://aihero.dev/skills-implement-spec) owns the graph when several tickets belong to one feature. Each ticket has a separate checkout and branch, while the feature branch holds their combined result.
 
 ## Pre-agreed seams
 
@@ -55,11 +57,11 @@ Task completion and tracker status are separate. `implement` now refreshes and c
 
 **Can I point it at all my tickets at once, or run several in parallel?**
 
-Use [implement-spec](https://aihero.dev/skills-implement-spec) for a whole graph. It opens one task per ticket and settles each into the feature branch. Separate checkouts and run bindings keep each implementer's commits attached to its own work.
+Use [implement-spec](https://aihero.dev/skills-implement-spec) for a whole graph. It opens one task per ticket and settles each into the feature branch. The coordinating session owns ticket tasks and performs their commits and lifecycle commands, including fix rounds; implementers edit and test in the assigned checkout.
 
 **Can it open a pull request instead of committing?**
 
-It commits locally through git-workflow, then reviews the committed work. Publication requires an explicit request; finishing a task does not push it or open a pull request.
+It commits locally with native Git, then reviews the committed work. Publication requires an explicit request; finishing a task does not push it or open a pull request.
 
 **`code-review` says it cannot see my changes.**
 
@@ -81,7 +83,7 @@ The agent resolved `#2` against another numbered list in context, such as a todo
 - The session opens by reading the ticket or spec and restating what it will build, rather than asking you what to build.
 - You can see `tdd` invoked in the trace, with a failing test before implementation.
 - Typechecks and single test files run repeatedly during the run, and the umbrella check runs at the end.
-- The trace shows `commit-input` followed by `commit` with literal task paths, before review.
+- The trace shows native `git add <paths>` and `git commit` with paths listed one by one, before review.
 - The diff is one ticket's worth of change: a vertical slice through every layer, not several tickets swept together.
 
 ## Where it fits

@@ -12,8 +12,8 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
 - **[setup-deep-modules](./setup-deep-modules/SKILL.md)**: Enforce deep modules and sans-I/O cores in TypeScript, Python, and Rust through the normal check command. Run once per repository.
 - **[setup-matt-pocock-skills](./setup-matt-pocock-skills/SKILL.md)**: Configure this repo for the engineering skills (issue tracker, triage labels, domain doc layout). Run once per repo.
-- **[implement](./implement/SKILL.md)**: Build the work described by a spec or set of tickets, driving `/tdd` at the seams the ticket or spec names and committing through git-workflow before `/code-review`.
-- **[implement-spec](./implement-spec/SKILL.md)**: Implement a whole spec in one feature task. Runs ticket tasks across the ready frontier, settles them into the feature branch, then closes out with `/code-review` and `/retro` before primary-session settlement.
+- **[implement](./implement/SKILL.md)**: Build the work described by a spec or set of tickets, driving `/tdd` at the seams the ticket or spec names and committing with native Git before `/code-review`.
+- **[implement-spec](./implement-spec/SKILL.md)**: Implement a whole spec in one feature task. Runs ticket tasks across the ready frontier, settles them into the feature branch, then closes out with `/code-review` and `/retro` before asking the operator to settle into main.
 - **[wayfinder](./wayfinder/SKILL.md)**: Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on the issue tracker, resolved one at a time until the way to the destination is clear.
 
 ## Model-invoked

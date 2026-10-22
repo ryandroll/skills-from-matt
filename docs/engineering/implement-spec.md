@@ -1,6 +1,6 @@
 ## What it does
 
-`implement-spec` takes a [spec](https://www.aihero.dev/ai-coding-dictionary/spec) and its [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) and lands the whole thing in one run. The orchestrating [agent](https://www.aihero.dev/ai-coding-dictionary/agent) hands each ticket to an implementer [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) working in its own ticket task, settles each into the **feature branch** itself, runs [code-review](https://aihero.dev/skills-code-review) and [retro](https://aihero.dev/skills-retro), and leaves the feature ready for the primary session to settle into `main`.
+`implement-spec` takes a [spec](https://www.aihero.dev/ai-coding-dictionary/spec) and its [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) and lands the whole thing in one run. The orchestrating [agent](https://www.aihero.dev/ai-coding-dictionary/agent) hands each ticket to an implementer [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) working in its own ticket task, settles each into the **feature branch** itself, runs [code-review](https://aihero.dev/skills-code-review) and [retro](https://aihero.dev/skills-retro), and asks the operator before `git-workflow settle` into main.
 
 It reads the tickets as a **task graph**, not a list. Blocking edges decide what can start, so at any moment there is a **frontier** of tickets whose blockers have all landed, and frontier tickets run concurrently within available managed capacity. That is the difference from working the tickets one by one. The graph's shape sets the pace, not the tickets' order on the tracker.
 
@@ -19,7 +19,7 @@ You invoke this by typing `/implement-spec`, and the agent won't reach for it on
 
 - **An issue tracker.** The skill reads the tickets from, and resolves them on, the tracker [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) configured. If none has been configured, it stops and tells you to run that first rather than guessing.
 - **Tickets with blocking edges and Seams sections**, as [to-spec](https://aihero.dev/skills-to-spec) writes them. Without edges the graph is flat and every ticket starts at once.
-- **An open feature task with a bound run and spare managed capacity.** Git-workflow owns each checkout. Step 1 checks these facts before launching implementers, and stops with the exact next command if they do not hold.
+- **An owned feature task targeting main.** Step 1 checks with `git-workflow status` before launching implementers, and stops with the `git-workflow start` command if this is not the session's feature checkout.
 
 ## The feature branch
 
@@ -29,7 +29,7 @@ Everything lands on one branch. Each implementer:
 2. always calls [tdd](https://aihero.dev/skills-tdd) at the seams in its ticket's Seams section, red-green one slice at a time,
 3. reports the changes and verification results without committing. It writes only in its assigned ticket checkout.
 
-This session takes over after the implementer reports, commits verified changes through git-workflow, and runs code-review against that ticket's base and spec. It applies accepted fixes itself or through the implementer, one writer at a time, then verifies and commits them. This session refreshes and completes the ticket before settling it from the feature checkout under the feature run. Settlement integrates each ticket and retires its checkout. The feature refreshes after each settlement and before review. After the last ticket, reviewers at the strongest tier review the whole feature. Review fixes land through the same route, then retro adds and commits its own deterministic check on the feature branch. This session makes and commits any further changes you accept in the feature checkout, then refreshes, verifies and completes the feature. The final output gives the primary session its settlement commands. Publishing is a separate operator request.
+The coordinating session owns ticket tasks throughout implementation and fix rounds; implementers check the assigned checkout without taking ownership. After the implementer reports, this session commits verified changes with native `git add <paths>` and `git commit`, listing paths one by one, never `-A` or `.`, and runs code-review against that ticket's base and spec. It applies accepted fixes itself or through the implementer, one writer at a time, then verifies and commits them. This session uses `git-workflow refresh`, verifies the result, then uses `git-workflow complete` and `git-workflow settle` to land the ticket into the feature. Settlement integrates each ticket and retires its checkout. The feature refreshes after each settlement and before review. After the last ticket, reviewers at the strongest tier review the whole feature. Review fixes land through the same route, then retro adds and commits its own deterministic check on the feature branch. This session makes and commits any further changes you accept in the feature checkout, then refreshes, verifies and completes the feature. The final output asks the operator before `git-workflow settle` into main. Publishing is a separate operator request.
 
 Implementers talk to the orchestrator through [context pointers](https://www.aihero.dev/ai-coding-dictionary/context-pointer) (the spec, the ticket, shared exploration notes, earlier commits) rather than pasted summaries. This keeps each subagent's prompt small and leaves room in the orchestrator's window for the graph.
 
@@ -43,7 +43,7 @@ One session dispatches the ready frontier, opens ticket tasks from the feature b
 
 **Does it need GitHub? I want it to stop at the branch.**
 
-No. It works offline with a local markdown tracker and ends with the completed feature branch and the commands for the primary session to settle it. `main` stays unchanged until that settlement. It publishes only when you ask.
+No. It works offline with a local markdown tracker and ends by asking the operator before settling the completed feature into main. It publishes only when you ask.
 
 **Its review and fix loop ran for hours, or kept "fixing" tickets that hadn't been built yet.**
 
@@ -76,7 +76,7 @@ A task checkout holds tracked files, so verification that depends on ignored fix
 - Every ticket's trace shows `tdd` running, with a failing test before the code.
 - Implementers report without committing; this session commits and reviews each ticket before settlement.
 - Each ticket refreshes and completes before the feature session settles it and retires its checkout.
-- Review and retro finish on the feature branch; `main` stays unchanged until the primary session settles it.
+- Review and retro finish on the feature branch; settlement into main waits for the operator's approval.
 
 ## Where it fits
 

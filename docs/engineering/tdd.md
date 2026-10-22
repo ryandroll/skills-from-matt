@@ -25,7 +25,7 @@ A ticket without seams needs repair, not a test exemption.
 
 ## Prerequisites
 
-[codebase-design](https://aihero.dev/skills-codebase-design) needs to be installed. `tdd` used to carry its own deep-module and interface-design notes; v1.0 deleted them in favour of the shared skill, and `tdd` now uses its interface-design vocabulary. Git-workflow must provide a skill-owned checkout, an open task and a bound run. Step 1 checks these read-only and stops with the next command if anything is missing.
+[codebase-design](https://aihero.dev/skills-codebase-design) needs to be installed. `tdd` used to carry its own deep-module and interface-design notes; v1.0 deleted them in favour of the shared skill, and `tdd` now uses its interface-design vocabulary. `git-workflow status` must identify a task checkout matching the assignment before writing; otherwise step 1 stops with the `git-workflow start` command.
 
 ## The loop, and the seam it runs at
 
@@ -49,7 +49,9 @@ Mocks are for system boundaries only: external APIs, time, randomness, sometimes
 
 ## Verification and commits
 
-The red-green loop runs in the checked task checkout. Focused tests establish each slice, typechecks run regularly, and the umbrella check finishes the work, using the command found through the project's agent instructions. Verified changes use git-workflow's `commit-input` then `commit` route, with literal file paths and the same run identity. Verification and commit results are reported separately.
+A session that will commit in a task it did not start runs `git-workflow takeover` first.
+
+The red-green loop runs in the checked task checkout. Focused tests establish each slice, typechecks run regularly, and the umbrella check finishes the work, using the command found through the project's agent instructions. Verified changes use native `git add <paths>` and `git commit`, listing paths one by one, never `-A` or `.`. Verification and commit results are reported separately.
 
 ## Common questions
 
@@ -83,7 +85,7 @@ No. Run against one ticket, it can propose work that belongs to a sibling ticket
 
 ## It's working if
 
-- The run stops before writing in the wrong checkout, and successful commits name literal task files through git-workflow.
+- The run stops before writing in the wrong checkout, and native commits name literal task files.
 - Ticket work uses the ticket's Seams section; a missing section stops the run with a request for seams from `to-spec`.
 - With no ticket, it names the seams and waits for your confirmation before any test file exists.
 - One test appears, goes red, gets just enough code to pass, and only then does the next test appear, not a batch of tests followed by a batch of code.

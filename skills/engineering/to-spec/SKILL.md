@@ -5,9 +5,9 @@ description: "Turn a settled conversation or plan into a spec and tracer-bullet 
 
 ## Keep the feature together
 
-Before the first file write for this feature, call the Skill tool with "git-workflow" and use its task lifecycle. Reuse the feature task when continuing its conversation or map. Otherwise run `task-start --repo <primary> --task-id <feature-slug> --task-id-source <issuer> --session-id <session> --confirm-authorized` from the primary checkout. Move to the returned checkout, use its `environment.TMPDIR`, and continue all feature work there. `task-start` binds the run; when resuming an existing checkout, use `run-start --repo <feature-checkout> --task-id <feature> --task-id-source <issuer> --session-id <session> --expected-head <inspected-head> --confirm-authorized` before writing. Keep the returned task, source and session tokens.
+Before the first durable repository write for this feature, call the Skill tool with "git-workflow" and use `git-workflow start` or return to the existing feature checkout, then keep all feature work there.
 
-This is task creation before writing, not a stage check. Glossary, ADRs, map, spec and tickets stay in this feature checkout through implementation, review and retro.
+Glossary, ADRs, map, spec and tickets stay in this feature checkout through implementation, review and retro.
 
 This skill takes the current conversation context and codebase understanding and produces a spec and its tickets in one invocation. Do NOT interview the user; just synthesize what you already know.
 
@@ -169,4 +169,4 @@ In either form, avoid specific file paths or code snippets: they go stale fast. 
 
 ### 4. Present the breakdown
 
-Commit the feature's durable planning files through git-workflow's `commit-input` then `commit` route with literal paths, keeping the feature task open. In the final message, name the feature task and checkout, link the spec and present the published tickets as a numbered list. For each ticket, show its title, blocking edges, and the end-to-end behaviour it delivers.
+Commit the feature's durable planning files with native `git add <paths>` and `git commit`, listing paths one by one, never `-A` or `.`, and keep the feature task open. In the final message, name the feature task and checkout, link the spec and present the published tickets as a numbered list. For each ticket, show its title, blocking edges, and the end-to-end behaviour it delivers.
