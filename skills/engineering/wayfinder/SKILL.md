@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 ## Keep the feature together
 
-Before the first durable repository write for this feature, call the Skill tool with "git-workflow" and use `git-workflow start` or return to the existing feature checkout, then keep all feature work there.
+Before the first durable repository write for this map, call the Skill tool with "git-workflow" and use `git-workflow start` or return to this map's own feature checkout, then keep all work toward its destination there. A new idea starts its own map and its own task with `git-workflow start`.
 
 Glossary, ADRs, map, spec and tickets stay in this feature checkout through implementation, review and retro. Commit durable planning files with native `git add <paths>` and `git commit`, listing paths one by one, never `-A` or `.`, before ticket tasks are cut from the feature branch.
 
